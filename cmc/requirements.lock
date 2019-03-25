@@ -1,0 +1,27 @@
+dependencies:
+- name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 3.1.4
+- name: cmc-claim-store
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.8
+- name: cmc-citizen-frontend
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.5
+- name: draft-store-service
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.3
+- name: rpe-service-auth-provider
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.2
+- name: cmc-pdf-service
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.1.0
+- name: fees-register-api
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.3
+- name: payment-api
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.3
+digest: sha256:de5b68b6d537124fad76fc0d292d8b55c5df5cc8cdca07b55a2ccbfe04d77652
+generated: 2019-03-25T12:12:10.652452Z
