@@ -1,9 +1,67 @@
 tags:
   cmc-claim-store-postgresql-pod: false # claim-store chart
-  cmc-citizen-frontend-pod: false # claim-store chart
-  rpe-feature-toggle-api-pod: true # citizen-frontend dep
-  postgresql-pod: false # any chart specific postgres
+  cmc-citizen-frontend-pod: false       # claim-store chart
+  rpe-feature-toggle-api-pod: true      # citizen-frontend dep
+  postgresql-pod: false                 # any chart specific postgres
 
+global:
+  environment: saat
+  subscriptionId: "bf308a5c-0624-4334-8ff8-8dca9fd43783"
+  tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+
+### CMC SERVICES ###
+cmc-claim-store:
+  java:
+    releaseNameOverride: cmc-claim-store
+    image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
+    readinessDelay: 120 # plenty time for dependencies all start
+    livenessDelay: 120 # plenty time for dependencies all start
+    environment:
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
+      PDF_SERVICE_URL: http://cmc-pdf-service
+      SEND_LETTER_URL: false
+      DOCUMENT_MANAGEMENT_URL: false
+      CLAIM_STORE_DB_HOST: cmc-postgres
+      CLAIM_STORE_DB_PASSWORD: claimstore
+      CMC_DB_HOST: cmc-postgres
+      CMC_DB_PASSWORD: cmc
+      FRONTEND_BASE_URL: https://DEMO_CMC_FQDN
+      RESPOND_TO_CLAIM_URL: https://DEMO_CMC_FQDN/first-contact/start
+
+cmc-citizen-frontend:
+  nodejs:
+    releaseNameOverride: cmc-citizen-frontend
+    image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
+    readinessDelay: 180 # let backends all start
+    livenessDelay: 180 # let backends all start
+    registerAdditionalDns:
+      enabled: false
+    environment:
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
+      FEATURE_TOGGLES_API_URL: http://ftr-tgl-api
+      CLAIM_STORE_URL: http://cmc-claim-store
+      IDAM_S2S_AUTH: http://rpe-service-auth-provider
+      S2S_URL: http://rpe-service-auth-provider
+      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
+      PAY_URL: http://payment-api
+      FEES_URL: http://fees-register-api
+      DRAFT_STORE_URL: http://draft-store-service
+  rpe-feature-toggle-api:
+    releaseNameOverride: ftr-tgl-api
+    importer:
+      oneoff:
+        command: /scripts/add-weighted-toggle.sh cmc_admissions 'CMC admissions' '1.0' ${ADMIN_USERNAME_TEST} ${ADMIN_PASSWORD_TEST} &&
+          /scripts/add-toggle.sh cmc_defence_reminders 'CMC defence reminders' false ${ADMIN_USERNAME_TEST} ${ADMIN_PASSWORD_TEST}
+    java:
+      releaseNameOverride: ftr-tgl-api
+      environment:
+        FEATURES_DB_HOST: cmc-postgres
+########################
+
+##### DEPENDENCIES #####
 cmc-pdf-service:
   java:
     releaseNameOverride: cmc-pdf-service
@@ -25,6 +83,8 @@ draft-store-service:
 
 fees-register-api:
   java:
+    readinessDelay: 90
+    livenessDelay: 90
     releaseNameOverride: fees-register-api
     image: hmcts.azurecr.io/hmcts/fees-register-api:latest
     environment:
@@ -36,13 +96,16 @@ fees-register-api:
 
 payment-api:
   java:
+    readinessDelay: 90
+    livenessDelay: 90
     releaseNameOverride: payment-api
     image: hmcts.azurecr.io/hmcts/payment-api:latest
     environment:
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider
       FEES_REGISTER_URL: http://fees-register-api
       SPRING_DATASOURCE_URL: "jdbc:postgresql://cmc-postgres:5432/payment_api"
-      SPRING_DATASOURCE_USERNAME: payment-api
+      SPRING_DATASOURCE_USERNAME: payment_api
+      SPRING_DATASOURCE_PASSWORD: payment_api
       SPRING_LIQUIBASE_ENABLED: true
 
 rpe-service-auth-provider:
@@ -71,49 +134,4 @@ postgresql:
   nameOverride: postgres
   persistence:
     enabled: false
-
-cmc-claim-store:
-  java:
-    releaseNameOverride: cmc-claim-store
-    image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
-    environment:
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
-      PDF_SERVICE_URL: http://cmc-pdf-service
-      SEND_LETTER_URL: false
-      DOCUMENT_MANAGEMENT_URL: false
-      CLAIM_STORE_DB_HOST: cmc-postgres
-      CMC_DB_HOST: cmc-postgres
-      FRONTEND_BASE_URL: https://${DEMO_CMC_FQDN}
-      RESPOND_TO_CLAIM_URL: https://${DEMO_CMC_FQDN}/first-contact/start
-
-cmc-citizen-frontend:
-  nodejs:
-    releaseNameOverride: cmc-citizen-frontend
-    image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
-    readinessDelay: 90                        # claim-store will start much slower
-    livenessDelay: 90                         # claim-store will start much slower
-    registerAdditionalDns:
-      enabled: false
-    environment:
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
-      FEATURE_TOGGLES_API_URL: http://ftr-tgl-api
-      CLAIM_STORE_URL: http://cmc-claim-store
-      IDAM_S2S_AUTH: http://rpe-service-auth-provider
-      S2S_URL: http://rpe-service-auth-provider
-      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
-      PAY_URL: http://payment-api
-      FEES_URL: http://fees-register-api
-      DRAFT_STORE_URL: http://draft-store-service
-  rpe-feature-toggle-api:
-    releaseNameOverride: ftr-tgl-api
-    importer:
-      oneoff:
-        command: /scripts/add-weighted-toggle.sh cmc_admissions 'CMC admissions' '1.0' ${ADMIN_USERNAME_TEST} ${ADMIN_PASSWORD_TEST} &&
-          /scripts/add-toggle.sh cmc_defence_reminders 'CMC defence reminders' false ${ADMIN_USERNAME_TEST} ${ADMIN_PASSWORD_TEST}
-    java:
-      releaseNameOverride: ftr-tgl-api
-      environment:
-        FEATURES_DB_HOST: cmc-postgres
+########################
