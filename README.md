@@ -16,4 +16,5 @@ helm install --wait --timeout 120 --namespace money-claims --name cmc --debug -f
 ## TODO
 
 - add send-letter and document-management services (Praveen in platform looking into - send-letter chart is ready)
+- check azure devops - ci-values will need adjusting? what do we define here - which env?
 - ingress and demo environment setup ???
