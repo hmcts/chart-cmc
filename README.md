@@ -16,5 +16,4 @@ helm install --wait --timeout 120 --namespace money-claims --name cmc --debug -f
 ## TODO
 
 - add send-letter and document-management services (Praveen in platform looking into - send-letter chart is ready)
-- claim-store fails with: `Caused by: java.net.UnknownHostException: mta.reform.hmcts.net` from sandbox cluster
 - ingress and demo environment setup ???
