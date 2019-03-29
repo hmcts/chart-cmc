@@ -23,9 +23,9 @@ dependencies:
   - name: payment-api
     version: ~0.0.3
     repository: '@hmcts'
-  # - name: document-management
-  #   version: ~0.1.0
-  #   repository: '@hmcts'
-  # - name: send-letter-bulk-print
-  #   version: ~0.1.0
-  #   repository: '@hmcts'
+  - name: dm-store
+    version: ~0.0.1
+    repository: '@hmcts'
+  - name: rpe-send-letter-service
+    version: 0.0.3
+    repository: '@hmcts'

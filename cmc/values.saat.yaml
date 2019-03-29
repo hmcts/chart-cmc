@@ -20,8 +20,8 @@ cmc-claim-store:
       IDAM_API_URL: http://idam-api-idam-saat.service.core-compute-idam-saat.internal
       IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
       PDF_SERVICE_URL: http://cmc-pdf-service
-      SEND_LETTER_URL: false
-      DOCUMENT_MANAGEMENT_URL: false
+      SEND_LETTER_URL: http://rpe-send-letter-service
+      DOCUMENT_MANAGEMENT_URL: http://dm-store
       CLAIM_STORE_DB_HOST: cmc-postgres
       CLAIM_STORE_DB_PASSWORD: claimstore
       CMC_DB_HOST: cmc-postgres
@@ -62,6 +62,33 @@ cmc-citizen-frontend:
 ########################
 
 ##### DEPENDENCIES #####
+rpe-send-letter-service:
+  java:
+    releaseNameOverride: rpe-send-letter-service
+    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+    environment:
+      FILE_CLEANUP_ENABLED: true
+      FLYWAY_URL: "jdbc:postgresql://rpe-send-letter-service-db-aat.postgres.database.azure.com:5432/send_letter?sslmode=require"
+      LETTER_TRACKING_DB_CONN_OPTIONS: "?sslmode=require"
+      LETTER_TRACKING_DB_HOST: rpe-send-letter-service-db-aat.postgres.database.azure.com
+      LETTER_TRACKING_DB_NAME: send_letter
+      LETTER_TRACKING_DB_USER_NAME: "send_letter@rpe-send-letter-service-db-aat"
+      S2S_URL: http://rpe-service-auth-provider
+
+dm-store:
+  java:
+    releaseNameOverride: dm-store
+    image: hmcts.azurecr.io/hmcts/dm-store:latest
+    environment:
+      IDAM_USER_BASE_URI: http://idam-api-idam-saat.service.core-compute-idam-saat.internal
+      ENABLE_DB_MIGRATE: 'true'
+      ENABLE_TTL: 'false'
+      IDAM_S2S_BASE_URI: http://rpe-service-auth-provider
+      PACKAGES_ENVIRONMENT: 'aat'
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://dm-store-postgres-db-aat.postgres.database.azure.com:5432/evidence?ssl=true'
+      SPRING_DATASOURCE_USERNAME: 'evidence@dm-store-postgres-db-aat'
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: 'dm-store-docstore-aat'
+
 cmc-pdf-service:
   java:
     releaseNameOverride: cmc-pdf-service
