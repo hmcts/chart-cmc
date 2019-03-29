@@ -3,6 +3,7 @@ tags:
   cmc-citizen-frontend-pod: false       # claim-store chart
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
+  blobstorage: false                    # blob storage for dm-store
 
 global:
   environment: saat
@@ -78,8 +79,17 @@ rpe-send-letter-service:
 
 dm-store:
   java:
+    readinessDelay: 90
+    livenessDelay: 90
     releaseNameOverride: dm-store
     image: hmcts.azurecr.io/hmcts/dm-store:latest
+    secrets: []
+    keyVaults:
+        ccd:
+          resourceGroup: ccd-shared
+          secrets:
+            - dm-store-storage-account-primary-connection-string
+            - dm-store-storage-account-secondary-connection-string
     environment:
       IDAM_USER_BASE_URI: http://idam-api-idam-saat.service.core-compute-idam-saat.internal
       ENABLE_DB_MIGRATE: 'true'
@@ -88,8 +98,6 @@ dm-store:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://cmc-postgres:5432/evidence"
       SPRING_DATASOURCE_USERNAME: evidence
       SPRING_DATASOURCE_PASSWORD: evidence
-      PACKAGES_ENVIRONMENT: 'aat'
-      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: 'dm-store-docstore-aat'
 
 cmc-pdf-service:
   java:

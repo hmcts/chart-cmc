@@ -6,7 +6,7 @@ dependencies:
     version: ~0.0.8
     repository: '@hmcts'
   - name: cmc-citizen-frontend
-    version: ~0.0.4
+    version: ~0.0.5
     repository: '@hmcts'
   - name: draft-store-service
     version: ~0.0.3
