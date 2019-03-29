@@ -27,5 +27,5 @@ dependencies:
     version: ~0.0.1
     repository: '@hmcts'
   - name: rpe-send-letter-service
-    version: 0.0.3
+    version: ~0.0.3
     repository: '@hmcts'
