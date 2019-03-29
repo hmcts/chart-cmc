@@ -3,6 +3,7 @@ tags:
   cmc-citizen-frontend-pod: false       # claim-store chart
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
+  blobstorage: true                     # blob storage for dm-store
 
 global:
   environment: saat
@@ -14,17 +15,17 @@ cmc-claim-store:
   java:
     releaseNameOverride: cmc-claim-store
     image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
-    readinessDelay: 120 # plenty time for dependencies all start
-    livenessDelay: 120 # plenty time for dependencies all start
+    readinessDelay: 180 # plenty time for dependencies all start
+    livenessDelay: 180 # plenty time for dependencies all start
     environment:
       IDAM_API_URL: http://idam-api-idam-saat.service.core-compute-idam-saat.internal
       IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
       PDF_SERVICE_URL: http://cmc-pdf-service
-      SEND_LETTER_URL: false
-      DOCUMENT_MANAGEMENT_URL: false
-      CLAIM_STORE_DB_HOST: cmc-postgres
+      SEND_LETTER_URL: http://rpe-send-letter-service
+      DOCUMENT_MANAGEMENT_URL: http://dm-store
+      CLAIM_STORE_DB_HOST: money-claims-postgres
       CLAIM_STORE_DB_PASSWORD: claimstore
-      CMC_DB_HOST: cmc-postgres
+      CMC_DB_HOST: money-claims-postgres
       CMC_DB_PASSWORD: cmc
       FRONTEND_BASE_URL: https://DEMO_CMC_FQDN
       RESPOND_TO_CLAIM_URL: https://DEMO_CMC_FQDN/first-contact/start
@@ -58,10 +59,53 @@ cmc-citizen-frontend:
     java:
       releaseNameOverride: ftr-tgl-api
       environment:
-        FEATURES_DB_HOST: cmc-postgres
+        FEATURES_DB_HOST: money-claims-postgres
 ########################
 
 ##### DEPENDENCIES #####
+rpe-send-letter-service:
+  java:
+    releaseNameOverride: rpe-send-letter-service
+    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+    environment:
+      FILE_CLEANUP_ENABLED: true
+      FLYWAY_URL: "jdbc:postgresql://money-claims-postgres:5432/send_letter"
+      LETTER_TRACKING_DB_CONN_OPTIONS: ""
+      LETTER_TRACKING_DB_HOST: money-claims-postgres
+      LETTER_TRACKING_DB_NAME: send_letter
+      LETTER_TRACKING_DB_USER_NAME: "send_letter"
+      LETTER_TRACKING_DB_PASSWORD: "send_letter"
+      S2S_URL: http://rpe-service-auth-provider
+
+dm-store:
+  java:
+    releaseNameOverride: dm-store
+    image: hmcts.azurecr.io/hmcts/dm-store:latest
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        secretRef: storage-secret-money-claims
+        key: storageAccountName
+      STORAGE_ACCOUNT_KEY:
+        secretRef: storage-secret-money-claims
+        key: accessKey
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
+        secretRef: container-secret-money-claims-dm-docstore
+        key: containerName
+    keyVaults:
+        ccd:
+          resourceGroup: ccd-shared
+          secrets:
+            - dm-store-storage-account-primary-connection-string
+            - dm-store-storage-account-secondary-connection-string
+    environment:
+      IDAM_USER_BASE_URI: http://idam-api-idam-saat.service.core-compute-idam-saat.internal
+      ENABLE_DB_MIGRATE: 'true'
+      ENABLE_TTL: 'false'
+      IDAM_S2S_BASE_URI: http://rpe-service-auth-provider
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://money-claims-postgres:5432/evidence"
+      SPRING_DATASOURCE_USERNAME: evidence
+      SPRING_DATASOURCE_PASSWORD: evidence
+
 cmc-pdf-service:
   java:
     releaseNameOverride: cmc-pdf-service
@@ -74,7 +118,7 @@ draft-store-service:
     environment:
       IDAM_URL: http://idam-api-idam-saat.service.core-compute-idam-saat.internal
       S2S_URL: http://rpe-service-auth-provider
-      DRAFT_STORE_DB_HOST: cmc-postgres
+      DRAFT_STORE_DB_HOST: money-claims-postgres
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
       DRAFT_STORE_DB_USER_NAME: draftstore
@@ -83,12 +127,10 @@ draft-store-service:
 
 fees-register-api:
   java:
-    readinessDelay: 90
-    livenessDelay: 90
     releaseNameOverride: fees-register-api
     image: hmcts.azurecr.io/hmcts/fees-register-api:latest
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://cmc-postgres:5432/fees_register"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://money-claims-postgres:5432/fees_register"
       SPRING_DATASOURCE_USERNAME: fees_register
       SPRING_DATASOURCE_PASSWORD: fees_register
       SPRING_LIQUIBASE_ENABLED: true
@@ -96,14 +138,12 @@ fees-register-api:
 
 payment-api:
   java:
-    readinessDelay: 90
-    livenessDelay: 90
     releaseNameOverride: payment-api
     image: hmcts.azurecr.io/hmcts/payment-api:latest
     environment:
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider
       FEES_REGISTER_URL: http://fees-register-api
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://cmc-postgres:5432/payment_api"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://money-claims-postgres:5432/payment_api"
       SPRING_DATASOURCE_USERNAME: payment_api
       SPRING_DATASOURCE_PASSWORD: payment_api
       SPRING_LIQUIBASE_ENABLED: true
@@ -131,6 +171,10 @@ postgresql:
       CREATE DATABASE fees_register WITH OWNER = fees_register ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE USER payment_api WITH PASSWORD 'payment_api';
       CREATE DATABASE payment_api WITH OWNER = payment_api ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE USER evidence WITH PASSWORD 'evidence';
+      CREATE DATABASE evidence WITH OWNER = evidence ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE USER send_letter WITH PASSWORD 'send_letter';
+      CREATE DATABASE send_letter WITH OWNER = send_letter ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   nameOverride: postgres
   persistence:
     enabled: false

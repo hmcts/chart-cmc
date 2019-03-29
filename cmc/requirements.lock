@@ -23,5 +23,11 @@ dependencies:
 - name: payment-api
   repository: https://hmcts.azurecr.io/helm/v1/repo
   version: 0.0.3
-digest: sha256:de5b68b6d537124fad76fc0d292d8b55c5df5cc8cdca07b55a2ccbfe04d77652
-generated: 2019-03-25T12:12:10.652452Z
+- name: dm-store
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.1
+- name: rpe-send-letter-service
+  repository: https://hmcts.azurecr.io/helm/v1/repo
+  version: 0.0.3
+digest: sha256:c692e73d3a085efdceeae85800c835de3db9bbeaeeeaf9defee0ee9c330d78ea
+generated: 2019-03-29T11:07:26.45345Z
