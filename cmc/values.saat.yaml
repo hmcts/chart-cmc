@@ -68,11 +68,12 @@ rpe-send-letter-service:
     image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
     environment:
       FILE_CLEANUP_ENABLED: true
-      FLYWAY_URL: "jdbc:postgresql://rpe-send-letter-service-db-aat.postgres.database.azure.com:5432/send_letter?sslmode=require"
-      LETTER_TRACKING_DB_CONN_OPTIONS: "?sslmode=require"
-      LETTER_TRACKING_DB_HOST: rpe-send-letter-service-db-aat.postgres.database.azure.com
+      FLYWAY_URL: "jdbc:postgresql://cmc-postgres:5432/send_letter"
+      LETTER_TRACKING_DB_CONN_OPTIONS: ""
+      LETTER_TRACKING_DB_HOST: cmc-postgres
       LETTER_TRACKING_DB_NAME: send_letter
-      LETTER_TRACKING_DB_USER_NAME: "send_letter@rpe-send-letter-service-db-aat"
+      LETTER_TRACKING_DB_USER_NAME: "send_letter"
+      LETTER_TRACKING_DB_PASSWORD: "send_letter"
       S2S_URL: http://rpe-service-auth-provider
 
 dm-store:
@@ -84,9 +85,10 @@ dm-store:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
       IDAM_S2S_BASE_URI: http://rpe-service-auth-provider
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://cmc-postgres:5432/evidence"
+      SPRING_DATASOURCE_USERNAME: evidence
+      SPRING_DATASOURCE_PASSWORD: evidence
       PACKAGES_ENVIRONMENT: 'aat'
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://dm-store-postgres-db-aat.postgres.database.azure.com:5432/evidence?ssl=true'
-      SPRING_DATASOURCE_USERNAME: 'evidence@dm-store-postgres-db-aat'
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: 'dm-store-docstore-aat'
 
 cmc-pdf-service:
@@ -158,6 +160,10 @@ postgresql:
       CREATE DATABASE fees_register WITH OWNER = fees_register ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE USER payment_api WITH PASSWORD 'payment_api';
       CREATE DATABASE payment_api WITH OWNER = payment_api ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE USER evidence WITH PASSWORD 'evidence';
+      CREATE DATABASE evidence WITH OWNER = evidence ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE USER send_letter WITH PASSWORD 'send_letter';
+      CREATE DATABASE send_letter WITH OWNER = send_letter ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   nameOverride: postgres
   persistence:
     enabled: false
