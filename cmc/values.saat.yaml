@@ -52,10 +52,6 @@ cmc-citizen-frontend:
       DRAFT_STORE_URL: http://draft-store-service
   rpe-feature-toggle-api:
     releaseNameOverride: ftr-tgl-api
-    importer:
-      oneoff:
-        command: /scripts/add-weighted-toggle.sh cmc_admissions 'CMC admissions' '1.0' ${ADMIN_USERNAME_TEST} ${ADMIN_PASSWORD_TEST} &&
-          /scripts/add-toggle.sh cmc_defence_reminders 'CMC defence reminders' false ${ADMIN_USERNAME_TEST} ${ADMIN_PASSWORD_TEST}
     java:
       releaseNameOverride: ftr-tgl-api
       environment:

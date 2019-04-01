@@ -3,10 +3,10 @@ dependencies:
     version: ~3.1.0
     repository: '@stable'
   - name: cmc-claim-store
-    version: ~0.0.8
+    version: ~0.0.9
     repository: '@hmcts'
   - name: cmc-citizen-frontend
-    version: ~0.0.5
+    version: ~0.0.6
     repository: '@hmcts'
   - name: draft-store-service
     version: ~0.0.3
