@@ -1,2 +1,6 @@
 *.tgz
 charts/**
+requirements.lock
+.DS_Store
+install.sh
+values.sandbox.yaml
