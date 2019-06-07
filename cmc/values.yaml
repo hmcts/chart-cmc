@@ -93,14 +93,11 @@ dm-store:
     image: hmcts.azurecr.io/hmcts/dm-store:latest
     secrets:
       STORAGE_ACCOUNT_NAME:
-        secretRef: storage-secret-money-claims
-        key: storageAccountName
+        disabled: true
       STORAGE_ACCOUNT_KEY:
-        secretRef: storage-secret-money-claims
-        key: accessKey
+        disabled: true
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
-        secretRef: container-secret-money-claims-dm-docstore
-        key: containerName
+        disabled: true
     keyVaults:
         ccd:
           resourceGroup: ccd-shared
