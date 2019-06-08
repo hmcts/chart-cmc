@@ -11,27 +11,13 @@ tags:
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: cmc-claim-store
     image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
-    readinessDelay: 180 # plenty time for dependencies all start
-    livenessDelay: 180 # plenty time for dependencies all start
     environment:
-      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
-      PDF_SERVICE_URL: http://cmc-pdf-service
-      SEND_LETTER_URL: http://rpe-send-letter-service
-      DOCUMENT_MANAGEMENT_URL: http://dm-store
-      CLAIM_STORE_DB_HOST: money-claims-ccd-postgres
       CLAIM_STORE_DB_USERNAME: hmcts
       CLAIM_STORE_DB_PASSWORD: hmcts
-      CMC_DB_HOST: money-claims-ccd-postgres
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
-      FRONTEND_BASE_URL: https://DEMO_CMC_FQDN
-      RESPOND_TO_CLAIM_URL: https://DEMO_CMC_FQDN/first-contact/start
   ccd:
-    s2sUrl: http://rpe-service-auth-provider
-    draftStoreUrl: http://draft-store-service
-    paymentsUrl: http://payment-api
     adminWeb:
       enabled: true  # not sure why not picked up from claim-store defaults, missing version bump prob?
       environment:
@@ -40,33 +26,15 @@ cmc-claim-store:
       enabled: true  # not sure why not picked up from claim-store defaults, missing version bump prob?
       environment:
         NODE_TLS_REJECT_UNAUTHORIZED: 0  # not sure why not picked up from claim-store defaults, missing version bump prob?
-    importer:
-      userprofile:
-        userProfileDatabaseHost: money-claims-ccd-postgres
 
 cmc-citizen-frontend:
   nodejs:
-    releaseNameOverride: cmc-citizen-frontend
     image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
-    readinessDelay: 180 # let backends all start
-    livenessDelay: 180 # let backends all start
     registerAdditionalDns:
       enabled: false
-    environment:
-      FEATURE_TOGGLES_API_URL: http://ftr-tgl-api
-      CLAIM_STORE_URL: http://cmc-claim-store
-      IDAM_S2S_AUTH: http://rpe-service-auth-provider
-      S2S_URL: http://rpe-service-auth-provider
-      IDAM_S2S_AUTH_URL: http://rpe-service-auth-provider
-      PAY_URL: http://payment-api
-      FEES_URL: http://fees-register-api
-      DRAFT_STORE_URL: http://draft-store-service
   rpe-feature-toggle-api:
-    releaseNameOverride: ftr-tgl-api
     java:
-      releaseNameOverride: ftr-tgl-api
       environment:
-        FEATURES_DB_HOST: money-claims-ccd-postgres
         FEATURES_DB_NAME: features
         FEATURES_DB_USER_NAME: hmcts
         FEATURES_DB_PASSWORD: hmcts
@@ -75,21 +43,16 @@ cmc-citizen-frontend:
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    releaseNameOverride: rpe-send-letter-service
     image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
     environment:
       FILE_CLEANUP_ENABLED: true
-      FLYWAY_URL: "jdbc:postgresql://money-claims-ccd-postgres:5432/send_letter"
       LETTER_TRACKING_DB_CONN_OPTIONS: ""
-      LETTER_TRACKING_DB_HOST: money-claims-ccd-postgres
       LETTER_TRACKING_DB_NAME: send_letter
       LETTER_TRACKING_DB_USER_NAME: "hmcts"
       LETTER_TRACKING_DB_PASSWORD: "hmcts"
-      S2S_URL: http://rpe-service-auth-provider
 
 dm-store:
   java:
-    releaseNameOverride: dm-store
     image: hmcts.azurecr.io/hmcts/dm-store:latest
     secrets:
       STORAGE_ACCOUNT_NAME:
@@ -99,31 +62,22 @@ dm-store:
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
         disabled: true
     keyVaults:
-        ccd:
-          resourceGroup: ccd-shared
-          secrets:
-            - dm-store-storage-account-primary-connection-string
-            - dm-store-storage-account-secondary-connection-string
     environment:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
-      IDAM_S2S_BASE_URI: http://rpe-service-auth-provider
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://money-claims-ccd-postgres:5432/evidence"
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
 
 cmc-pdf-service:
   java:
-    releaseNameOverride: cmc-pdf-service
     image: hmcts.azurecr.io/hmcts/cmc-pdf-service:latest
+    keyVaults:
 
 draft-store-service:
   java:
-    releaseNameOverride: draft-store-service
     image: hmcts.azurecr.io/hmcts/draft-store-service:latest
+    keyVaults:
     environment:
-      S2S_URL: http://rpe-service-auth-provider
-      DRAFT_STORE_DB_HOST: money-claims-ccd-postgres
       DRAFT_STORE_DB_NAME: draftstore
       DRAFT_STORE_DB_PORT: '5432'
       DRAFT_STORE_DB_USER_NAME: hmcts
@@ -132,10 +86,9 @@ draft-store-service:
 
 fees-register-api:
   java:
-    releaseNameOverride: fees-register-api
     image: hmcts.azurecr.io/hmcts/fees-register-api:latest
+    keyVaults:
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://money-claims-ccd-postgres:5432/fees_register"
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
       SPRING_LIQUIBASE_ENABLED: true
@@ -143,20 +96,27 @@ fees-register-api:
 
 payment-api:
   java:
-    releaseNameOverride: payment-api
     image: hmcts.azurecr.io/hmcts/payment-api:latest
+    keyVaults:
     environment:
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider
-      FEES_REGISTER_URL: http://fees-register-api
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://money-claims-ccd-postgres:5432/payment_api"
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
       SPRING_LIQUIBASE_ENABLED: true
 
 rpe-service-auth-provider:
   java:
-    releaseNameOverride: rpe-service-auth-provider
     image: hmcts.azurecr.io/hmcts/rpe-service-auth-provider:latest
+    keyVaults:
+    environment:
+      MICROSERVICEKEYS_CMC: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CMC_CLAIM_SUBMIT_API: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CMC_LEGAL_FRONTEND: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CMC_CLAIM_STORE: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_EM_GW: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_GATEWAY: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_DG_DOCASSEMBLY_API: AAAAAAAAAAAAAAAA
 
 postgresql:
   resources:
@@ -174,7 +134,6 @@ postgresql:
       CREATE DATABASE "send_letter" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  nameOverride: ccd-postgres  # because ccd wont work without this specific name
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
