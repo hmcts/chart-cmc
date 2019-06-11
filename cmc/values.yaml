@@ -6,12 +6,13 @@ tags:
   ccd-idam-pr: false                    # manually configure whitelists in IDAM until IDAM here
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
-  blobstorage: true                     # blob storage for dm-store
+  blobstorage: false                    # blob storage for dm-store
 
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
     image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
+    keyVaults:
     environment:
       CLAIM_STORE_DB_USERNAME: hmcts
       CLAIM_STORE_DB_PASSWORD: hmcts
@@ -19,31 +20,75 @@ cmc-claim-store:
       CMC_DB_PASSWORD: hmcts
   ccd:
     adminWeb:
-      enabled: true  # not sure why not picked up from claim-store defaults, missing version bump prob?
+      enabled: true
       environment:
-        NODE_TLS_REJECT_UNAUTHORIZED: 0  # not sure why not picked up from claim-store defaults, missing version bump prob?
+        NODE_TLS_REJECT_UNAUTHORIZED: 0
     caseManagementWeb:
-      enabled: true  # not sure why not picked up from claim-store defaults, missing version bump prob?
+      enabled: true
       environment:
-        NODE_TLS_REJECT_UNAUTHORIZED: 0  # not sure why not picked up from claim-store defaults, missing version bump prob?
+        NODE_TLS_REJECT_UNAUTHORIZED: 0
+    importer:
+      userprofile:
+        enabled: true
+        jurisdictions:
+          - CMC
+        users:
+          - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|open
+        userProfileDatabasePort: 5432
+        userProfileDatabaseUser: hmcts
+        userProfileDatabasePassword: hmcts
+        userProfileDatabaseName: user-profile
+      definition:
+        enabled: true
+        importerUsername: ccd-importer@server.net
+        importerPassword: Password12
+        image: hmcts.azurecr.io/hmcts/cmc-ccd-definition-importer:1.2.6
+        definitionFilename: cmc-ccd.xlsx
+        userRoles:
+          - citizen
+          - caseworker-cmc
+          - caseworker-cmc-solicitor
+          - caseworker-cmc-systemupdate
+          - letter-holder
+          - caseworker-autotest1
+          - caseworker-cmc-anonymouscitizen
 
 cmc-citizen-frontend:
   nodejs:
     image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
-    registerAdditionalDns:
-      enabled: false
+    keyVaults:
+    environment:
+      IDAM_S2S_TOTP_SECRET: AAAAAAAAAAAAAAAA
   rpe-feature-toggle-api:
     java:
+      keyVaults:
       environment:
         FEATURES_DB_NAME: features
         FEATURES_DB_USER_NAME: hmcts
         FEATURES_DB_PASSWORD: hmcts
+        ADMIN_USERNAME_TEST: admin@example.com
+        ADMIN_PASSWORD_TEST: Password
+        EDITOR_USERNAME_TEST: editor@example.com
+        EDITOR_PASSWORD_TEST: Password
+    importer:
+      adminUsername: admin@example.com
+      adminPassword: Password
+      cron:
+        enabled: false
+      oneoff:
+        command: /scripts/add-weighted-toggle.sh cmc_admissions 'CMC admissions' '1.0' &&
+          /scripts/add-weighted-toggle.sh cmc_directions_questionnaire 'CMC Directions Questionnaire' '1.0' &&
+          /scripts/add-weighted-toggle.sh cmc_mediation_pilot 'CMC Mediation Pilot' '0.1' &&
+          /scripts/add-toggle.sh cmc_defence_reminders 'CMC defence reminders' false
+        enabled: true
+        permissions: cmc-new-features-consent-given
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
     image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+    keyVaults:
     environment:
       FILE_CLEANUP_ENABLED: true
       LETTER_TRACKING_DB_CONN_OPTIONS: ""
@@ -67,6 +112,9 @@ dm-store:
       ENABLE_TTL: 'false'
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
+      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
+      POSTGRES_STORAGE_ENABLED: 'true'
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
 
 cmc-pdf-service:
   java:
@@ -108,6 +156,7 @@ rpe-service-auth-provider:
     image: hmcts.azurecr.io/hmcts/rpe-service-auth-provider:latest
     keyVaults:
     environment:
+      TESTING_SUPPORT_ENABLED: 'true'
       MICROSERVICEKEYS_CMC: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CMC_CLAIM_SUBMIT_API: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CMC_LEGAL_FRONTEND: AAAAAAAAAAAAAAAA

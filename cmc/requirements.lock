@@ -3,11 +3,11 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com
   version: 5.3.4
 - name: cmc-claim-store
-  repository: https://hmcts.azurecr.io/helm/v1/repo
-  version: 1.1.0
+  repository: file:///Users/markry/workspace/hmcts/cmc-claim-store/charts/cmc-claim-store
+  version: 1.1.1
 - name: cmc-citizen-frontend
-  repository: https://hmcts.azurecr.io/helm/v1/repo
-  version: 1.0.1
+  repository: file:///Users/markry/workspace/hmcts/cmc-citizen-frontend/charts/cmc-citizen-frontend
+  version: 1.0.2
 - name: draft-store-service
   repository: https://hmcts.azurecr.io/helm/v1/repo
   version: 1.0.3
@@ -29,5 +29,5 @@ dependencies:
 - name: rpe-send-letter-service
   repository: https://hmcts.azurecr.io/helm/v1/repo
   version: 0.0.4
-digest: sha256:16452111db2626057f39f0ed555ebef78f27ea35446ee02f8cdff0e6373c9d58
-generated: "2019-06-06T19:28:46.797392+01:00"
+digest: sha256:1bd3c7e548fe83a4a4622b7e087c421874f572677eb07c20ca8d0c82bd25709f
+generated: "2019-06-09T20:35:40.667752+01:00"
