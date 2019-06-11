@@ -12,6 +12,10 @@ tags:
 cmc-claim-store:
   java:
     image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
     environment:
       CLAIM_STORE_DB_USERNAME: hmcts
@@ -19,6 +23,10 @@ cmc-claim-store:
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
   ccd:
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     adminWeb:
       enabled: true
       environment:
@@ -56,11 +64,19 @@ cmc-claim-store:
 cmc-citizen-frontend:
   nodejs:
     image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
     environment:
       IDAM_S2S_TOTP_SECRET: AAAAAAAAAAAAAAAA
   rpe-feature-toggle-api:
     java:
+      readinessDelay: 180
+      livenessDelay: 180
+      readinessPeriod: 60
+      livenessPeriod: 60
       keyVaults:
       environment:
         FEATURES_DB_NAME: features
@@ -88,6 +104,10 @@ cmc-citizen-frontend:
 rpe-send-letter-service:
   java:
     image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
     environment:
       FILE_CLEANUP_ENABLED: true
@@ -99,6 +119,10 @@ rpe-send-letter-service:
 dm-store:
   java:
     image: hmcts.azurecr.io/hmcts/dm-store:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     secrets:
       STORAGE_ACCOUNT_NAME:
         disabled: true
@@ -119,11 +143,19 @@ dm-store:
 cmc-pdf-service:
   java:
     image: hmcts.azurecr.io/hmcts/cmc-pdf-service:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
 
 draft-store-service:
   java:
     image: hmcts.azurecr.io/hmcts/draft-store-service:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
     environment:
       DRAFT_STORE_DB_NAME: draftstore
@@ -135,6 +167,10 @@ draft-store-service:
 fees-register-api:
   java:
     image: hmcts.azurecr.io/hmcts/fees-register-api:latest
+    readinessDelay: 120
+    livenessDelay: 120
+    readinessPeriod: 30
+    livenessPeriod: 30
     keyVaults:
     environment:
       SPRING_DATASOURCE_USERNAME: hmcts
@@ -145,6 +181,10 @@ fees-register-api:
 payment-api:
   java:
     image: hmcts.azurecr.io/hmcts/payment-api:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
     environment:
       SPRING_DATASOURCE_USERNAME: hmcts
@@ -154,6 +194,10 @@ payment-api:
 rpe-service-auth-provider:
   java:
     image: hmcts.azurecr.io/hmcts/rpe-service-auth-provider:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
     keyVaults:
     environment:
       TESTING_SUPPORT_ENABLED: 'true'
