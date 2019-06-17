@@ -12,8 +12,8 @@ tags:
 cmc-claim-store:
   java:
     image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
-    readinessDelay: 180
-    livenessDelay: 180
+    readinessDelay: 300
+    livenessDelay: 300
     readinessPeriod: 60
     livenessPeriod: 60
     keyVaults:
@@ -23,8 +23,8 @@ cmc-claim-store:
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
   ccd:
-    readinessDelay: 180
-    livenessDelay: 180
+    readinessDelay: 300
+    livenessDelay: 300
     readinessPeriod: 60
     livenessPeriod: 60
     adminWeb:
@@ -64,8 +64,8 @@ cmc-claim-store:
 cmc-citizen-frontend:
   nodejs:
     image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
-    readinessDelay: 180
-    livenessDelay: 180
+    readinessDelay: 300
+    livenessDelay: 300
     readinessPeriod: 60
     livenessPeriod: 60
     keyVaults:
@@ -104,8 +104,8 @@ cmc-citizen-frontend:
 rpe-send-letter-service:
   java:
     image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
-    readinessDelay: 180
-    livenessDelay: 180
+    readinessDelay: 300
+    livenessDelay: 300
     readinessPeriod: 60
     livenessPeriod: 60
     keyVaults:
@@ -118,9 +118,9 @@ rpe-send-letter-service:
 
 dm-store:
   java:
-    image: hmcts.azurecr.io/hmcts/dm-store:latest
-    readinessDelay: 180
-    livenessDelay: 180
+    image: hmcts.azurecr.io/hmcts/dm-store:pr-334  # fix for postgres bug
+    readinessDelay: 300
+    livenessDelay: 300
     readinessPeriod: 60
     livenessPeriod: 60
     secrets:
@@ -139,6 +139,7 @@ dm-store:
       ENABLE_AZURE_STORAGE_CONTAINER: 'false'
       POSTGRES_STORAGE_ENABLED: 'true'
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
+      CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
 
 cmc-pdf-service:
   java:
@@ -167,10 +168,10 @@ draft-store-service:
 fees-register-api:
   java:
     image: hmcts.azurecr.io/hmcts/fees-register-api:latest
-    readinessDelay: 120
-    livenessDelay: 120
-    readinessPeriod: 30
-    livenessPeriod: 30
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 45
+    livenessPeriod: 45
     keyVaults:
     environment:
       SPRING_DATASOURCE_USERNAME: hmcts
@@ -187,6 +188,7 @@ payment-api:
     livenessPeriod: 60
     keyVaults:
     environment:
+      ASB_CONNECTION_STRING: false
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
       SPRING_LIQUIBASE_ENABLED: true
@@ -209,6 +211,7 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_CCD_GATEWAY: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: AAAAAAAAAAAAAAAA
 
 postgresql:
