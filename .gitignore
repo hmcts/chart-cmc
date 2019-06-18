@@ -2,6 +2,3 @@
 charts/**
 requirements.lock
 .DS_Store
-install.sh
-demo*.yaml
-preview*.yaml

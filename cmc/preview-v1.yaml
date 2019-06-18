@@ -1,0 +1,163 @@
+
+### CMC SERVICES ###
+cmc-claim-store:
+  java:
+    releaseNameOverride: demo-v1-cmc-claimstore
+    secrets: 
+      GOV_NOTIFY_API_KEY:
+          secretRef: cmc-aat-notify-api-key
+          key: key
+      OAUTH2_CLIENT_SECRET:
+          secretRef: cmc-aat-oauth-client-secret
+          key: key
+      IDAM_CASEWORKER_ANONYMOUS_USERNAME:
+          secretRef: cmc-aat-anonymous-caseworker-username
+          key: key
+      IDAM_CASEWORKER_ANONYMOUS_PASSWORD:
+          secretRef: cmc-aat-anonymous-caseworker-password
+          key: key
+      IDAM_CASEWORKER_SYSTEM_USERNAME:
+          secretRef: cmc-aat-system-update-username
+          key: key
+      IDAM_CASEWORKER_SYSTEM_PASSWORD:
+          secretRef: cmc-aat-system-update-password
+          key: key
+    environment:
+      SPRING_MAIL_HOST: mailhog 
+      SPRING_MAIL_PORT: 1025
+      CLAIM_STORE_DB_HOST: demo-v1-postgres
+      CMC_DB_HOST: demo-v1-postgres
+      CORE_CASE_DATA_API_URL: http://demo-v1-data-store-api
+      FEATURE_TOGGLES_CCD_ENABLED: true
+      FEATURE_TOGGLES_CCD_ASYNC_ENABLED: false
+      FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
+      FEATURE_TOGGLES_ASYNC_EVENT_OPERATIONS_ENABLED: true
+      FEATURE_TOGGLES_EMAILTOSTAFF: true
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_S2S_AUTH_URL: http://demo-v1-s2s
+      PDF_SERVICE_URL: http://demo-v1-pdf
+      SEND_LETTER_URL: http://demo-v1-sendletter
+      DOCUMENT_MANAGEMENT_URL: http://demo-v1-dmstore
+      FRONTEND_BASE_URL: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal 
+      RESPOND_TO_CLAIM_URL: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/first-contact/start
+  ccd:
+    ingressHost: cmc-ccd-chart.service.core-compute-preview.internal 
+    idamApiUrl: https://idam-api.aat.platform.hmcts.net
+    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    s2sUrl: http://demo-v1-s2s
+    draftStoreUrl: http://demo-v1-draftstore
+    paymentsUrl: http://demo-v1-payments
+    apiGateway:
+      s2sKey: AAAAAAAAAAAAAAAA
+      idamClientSecret: 
+        fromSecret: true
+        secretKeyRefName: ccd-aat-ccd-api-gateway-oauth2-client-secret
+        secretKeyRefKey: key
+    dataStoreApi:
+      s2sKey: AAAAAAAAAAAAAAAA
+    definitionStoreApi:
+      s2sKey: AAAAAAAAAAAAAAAA
+    adminWeb:
+      s2sKey: AAAAAAAAAAAAAAAA
+      idamClientSecret: 
+        fromSecret: true
+        secretKeyRefName: ccd-aat-ccd-admin-web-oauth2-client-secret
+        secretKeyRefKey: key
+    importer:
+      userprofile:
+        userProfileDatabaseHost: demo-v1-postgres
+      definition:  
+        importerFromSecret: true
+        importerUsername: 
+          secretKeyRefName: cmc-aat-ccd-importer-username
+          secretKeyRefKey: key
+        importerPassword: 
+          secretKeyRefName: cmc-aat-ccd-importer-password
+          secretKeyRefKey: key
+        redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+    postgresql:
+      nameOverride: postgres
+
+cmc-citizen-frontend:
+  nodejs:
+    ingressHost: cmc-citizen-frontend-chart.service.core-compute-preview.internal 
+    releaseNameOverride: demo-v1-cmc-citizen-web
+    secrets:
+      OAUTH_CLIENT_SECRET:
+          secretRef: cmc-aat-citizen-oauth-client-secret
+          key: key
+    environment:
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
+      FEATURE_TOGGLES_API_URL: http://demo-v1-ftrtgl
+      CLAIM_STORE_URL: http://demo-v1-cmc-claimstore
+      IDAM_S2S_AUTH: http://demo-v1-s2s
+      PAY_URL: http://demo-v1-payments
+      FEES_URL: http://demo-v1-fees
+      DRAFT_STORE_URL: http://demo-v1-draftstore
+  rpe-feature-toggle-api:
+    importer:
+      apiUrl: http://demo-v1-ftrtgl/api/ff4j/store/features/
+    java:
+      releaseNameOverride: demo-v1-ftrtgl
+      environment:
+        FEATURES_DB_HOST: demo-v1-postgres
+########################
+
+##### DEPENDENCIES #####
+rpe-send-letter-service:
+  java:
+    releaseNameOverride: demo-v1-sendletter
+    environment:
+      FLYWAY_URL: "jdbc:postgresql://demo-v1-postgres:5432/send_letter"
+      LETTER_TRACKING_DB_HOST: demo-v1-postgres
+      S2S_URL: http://demo-v1-s2s
+
+dm-store:
+  java:
+    releaseNameOverride: demo-v1-dmstore
+    environment:
+      IDAM_USER_BASE_URI: https://idam-api.aat.platform.hmcts.net
+      IDAM_S2S_BASE_URI: http://demo-v1-s2s
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://demo-v1-postgres:5432/evidence"
+
+cmc-pdf-service:
+  java:
+    releaseNameOverride: demo-v1-pdf
+
+draft-store-service:
+  java:
+    releaseNameOverride: demo-v1-draftstore
+    environment:
+      IDAM_URL: https://idam-api.aat.platform.hmcts.net
+      S2S_URL: http://demo-v1-s2s
+      DRAFT_STORE_DB_HOST: demo-v1-postgres
+
+fees-register-api:
+  java:
+    releaseNameOverride: demo-v1-fees
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://demo-v1-postgres:5432/fees_register"
+
+payment-api:
+  java:
+    releaseNameOverride: demo-v1-payments
+    secrets: 
+      GOV_PAY_AUTH_KEY_CMC:
+          secretRef: ccpay-aat-gov-pay-keys-cmc
+          key: key
+    environment:
+      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.aat.platform.hmcts.net
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://demo-v1-s2s
+      FEES_REGISTER_URL: http://demo-v1-fees
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://demo-v1-postgres:5432/payment_api"
+      SPRING_MAIL_HOST: mailhog
+      SPRING_MAIL_PORT: 1025
+
+rpe-service-auth-provider:
+  java:
+    releaseNameOverride: demo-v1-s2s
+
+postgresql:
+  nameOverride: postgres
+########################
