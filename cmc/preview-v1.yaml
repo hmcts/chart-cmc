@@ -63,10 +63,17 @@ cmc-claim-store:
         fromSecret: true
         secretKeyRefName: ccd-aat-ccd-admin-web-oauth2-client-secret
         secretKeyRefKey: key
+    idam-pr:
+      releaseNameOverride: demo-v1-ccd-idam-pr
+      redirect_uris:
+        CCD:
+          - https://case-management-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect
+        CCD Admin:
+          - https://admin-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect
     importer:
       userprofile:
         userProfileDatabaseHost: demo-v1-postgres
-      definition:  
+      definition:
         importerFromSecret: true
         importerUsername: 
           secretKeyRefName: cmc-aat-ccd-importer-username
@@ -95,6 +102,9 @@ cmc-citizen-frontend:
       PAY_URL: http://demo-v1-payments
       FEES_URL: http://demo-v1-fees
       DRAFT_STORE_URL: http://demo-v1-draftstore
+  idam-pr:
+    service:
+      redirect_uri: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/receiver
   rpe-feature-toggle-api:
     importer:
       apiUrl: http://demo-v1-ftrtgl/api/ff4j/store/features/

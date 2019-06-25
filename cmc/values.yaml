@@ -2,8 +2,8 @@ tags:
   cmc-claim-store-postgresql-pod: false # claim-store chart
   cmc-citizen-frontend-pod: false       # claim-store chart
   cmc-ccd-stack: true                   # claim-store chart
-  idam-pr: false                        # manually configure whitelists in IDAM until IDAM here
-  ccd-idam-pr: false                    # manually configure whitelists in IDAM until IDAM here
+  idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
+  ccd-idam-pr: true                     # claim-store chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
   blobstorage: false                    # blob storage for dm-store
@@ -69,6 +69,9 @@ cmc-citizen-frontend:
     keyVaults:
     environment:
       IDAM_S2S_TOTP_SECRET: AAAAAAAAAAAAAAAA
+  idam-pr:
+    service:
+      name: Money Claims - Citizen
   rpe-feature-toggle-api:
     java:
       readinessDelay: 180
