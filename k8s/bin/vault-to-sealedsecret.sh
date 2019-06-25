@@ -21,7 +21,7 @@ secrets=(
 )
 
 for i in "${secrets[@]}"; do
-    vault=`echo "$i" | awk -F'|' '{print $1}'`-$env
+    vault=$(echo "$i" | awk -F'|' '{print $1}')-$env
     name=`echo "$i" | awk -F'|' '{print $2}'`
     secret=`az keyvault secret show --vault-name $vault --name $name -o tsv --query value`
 
