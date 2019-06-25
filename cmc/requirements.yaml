@@ -1,31 +1,33 @@
 dependencies:
   - name: postgresql
-    version: ~3.1.0
+    version: ~5.3.0
     repository: '@stable'
   - name: cmc-claim-store
-    version: ~0.0.9
+    version: ~1.1.0
     repository: '@hmcts'
+    # repository: file:///Users/markry/workspace/hmcts/cmc-claim-store/charts/cmc-claim-store
   - name: cmc-citizen-frontend
-    version: ~0.0.6
+    version: ~1.0.3
     repository: '@hmcts'
+    # repository: file:///Users/markry/workspace/hmcts/cmc-citizen-frontend/charts/cmc-citizen-frontend
   - name: draft-store-service
-    version: ~0.0.3
+    version: ~1.0.3
     repository: '@hmcts'
   - name: rpe-service-auth-provider
-    version: ~0.0.2
+    version: ~0.0.5
     repository: '@hmcts'
   - name: cmc-pdf-service
-    version: ~0.1.0
+    version: ~0.1.3
     repository: '@hmcts'
   - name: fees-register-api
-    version: ~0.0.3
+    version: ~0.0.4
     repository: '@hmcts'
   - name: payment-api
-    version: ~0.0.3
+    version: ~0.0.4
     repository: '@hmcts'
   - name: dm-store
-    version: ~0.0.1
+    version: ~1.0.1
     repository: '@hmcts'
   - name: rpe-send-letter-service
-    version: ~0.0.3
+    version: ~0.0.4
     repository: '@hmcts'

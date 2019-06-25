@@ -1,0 +1,13 @@
+# ingress:
+# helm install --name traefik --values local-k8s/traefik.yaml --namespace kube-system stable/traefik
+# helm upgrade traefik stable/traefik  -f local-k8s/traefik.yaml --install --wait --timeout 300 --namespace kube-system
+
+dashboard:
+  enabled: true
+  domain: traefik-ui.localhost
+
+ssl:
+  enabled: true
+  enforced: true
+  insecureSkipVerify: true
+  generateTLS: true
