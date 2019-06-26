@@ -25,15 +25,15 @@ for i in "${secrets[@]}"; do
     name=$(echo "$i" | awk -F'|' '{print $2}')
     secret=$(az keyvault secret show --vault-name $vault --name $name -o tsv --query value)
 
-    kubectl delete secret $vault-$name
+    # kubectl delete secret $vault-$name
 
-    kubectl create secret generic $vault-$name \
+    kubectl create secret generic $name \
         --from-literal key=$secret \
         --namespace $namespace \
-        -o json > $vault-$name.json
+        -o json > $name.json
 
-    kubeseal --format=yaml --cert=$cert < $vault-$name.json > ../sealed-secrets/$vault-$name.yaml
+    kubeseal --format=yaml --cert=$cert < $name.json > ../sealed-secrets/$name.yaml
 
-    rm -f $vault-$name.json
+    # rm -f $team-$name.json
 
 done
