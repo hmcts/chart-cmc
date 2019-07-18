@@ -14,7 +14,7 @@ dependencies:
     version: ~1.0.3
     repository: '@hmctspublic'
   - name: rpe-service-auth-provider
-    version: ~0.0.5
+    version: ~0.1.0
     repository: '@hmctspublic'
   - name: cmc-pdf-service
     version: ~0.1.3
