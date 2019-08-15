@@ -11,7 +11,7 @@ tags:
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    image: hmcts.azurecr.io/hmcts/cmc-claim-store:latest
+    image: hmctspublic.azurecr.io/cmc/claim-store:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -48,7 +48,7 @@ cmc-claim-store:
         userProfileDatabaseName: user-profile
       definition:
         enabled: true
-        image: hmcts.azurecr.io/hmcts/cmc-ccd-definition-importer:1.2.6.AKS
+        image: hmctspublic.azurecr.io/cmc/ccd-definition-importer:1.2.21
         definitionFilename: cmc-ccd.xlsx
         userRoles:
           - citizen
@@ -58,10 +58,12 @@ cmc-claim-store:
           - letter-holder
           - caseworker-autotest1
           - caseworker-cmc-anonymouscitizen
+          - caseworker-cmc-judge
+          - caseworker-cmc-legaladvisor
 
 cmc-citizen-frontend:
   nodejs:
-    image: hmcts.azurecr.io/hmcts/cmc-citizen-frontend:latest
+    image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -104,7 +106,7 @@ cmc-citizen-frontend:
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+    image: hmctspublic.azurecr.io/rpe/send-letter-service:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -119,7 +121,7 @@ rpe-send-letter-service:
 
 dm-store:
   java:
-    image: hmcts.azurecr.io/hmcts/dm-store:pr-334  # fix for postgres bug
+    image: hmctspublic.azurecr.io/dm/store:pr-334  # fix for postgres bug
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -144,7 +146,7 @@ dm-store:
 
 cmc-pdf-service:
   java:
-    image: hmcts.azurecr.io/hmcts/cmc-pdf-service:latest
+    image: hmctspublic.azurecr.io/cmc/pdf-service:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -153,7 +155,7 @@ cmc-pdf-service:
 
 draft-store-service:
   java:
-    image: hmcts.azurecr.io/hmcts/draft-store-service:latest
+    image: hmctspublic.azurecr.io/draft-store/service:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -168,7 +170,7 @@ draft-store-service:
 
 fees-register-api:
   java:
-    image: hmcts.azurecr.io/hmcts/fees-register-api:latest
+    image: hmctspublic.azurecr.io/fees/register-api:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 45
@@ -182,7 +184,7 @@ fees-register-api:
 
 payment-api:
   java:
-    image: hmcts.azurecr.io/hmcts/payment-api:latest
+    image: hmctspublic.azurecr.io/payment/api:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -196,7 +198,7 @@ payment-api:
 
 rpe-service-auth-provider:
   java:
-    image: hmcts.azurecr.io/hmcts/rpe-service-auth-provider:latest
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
