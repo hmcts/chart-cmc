@@ -219,7 +219,7 @@ rpe-service-auth-provider:
 
 postgresql:
   pgParameters:
-    maxConnections: 150
+    maxConnections: 300
   resources:
     requests:
       cpu: 25m
