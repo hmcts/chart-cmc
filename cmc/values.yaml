@@ -170,7 +170,7 @@ draft-store-service:
 
 fees-register-api:
   java:
-    image: hmctspublic.azurecr.io/fees/register-api:latest
+    image: hmctspublic.azurecr.io/fees-register/api:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 45
