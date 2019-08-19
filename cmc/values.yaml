@@ -191,6 +191,7 @@ payment-api:
     livenessPeriod: 60
     keyVaults:
     environment:
+      PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
       ASB_CONNECTION_STRING: false
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
