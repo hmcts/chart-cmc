@@ -3,13 +3,15 @@ dependencies:
     version: ~5.3.0
     repository: '@stable'
   - name: cmc-claim-store
-    version: ~1.1.5
+    version: ~1.1.6
     repository: '@hmctspublic'
     # repository: file:///Users/markry/workspace/hmcts/cmc-claim-store/charts/cmc-claim-store
+    repository: file:///Users/kariml/Development/cmc-claim-store/charts/cmc-claim-store
   - name: cmc-citizen-frontend
-    version: ~1.0.7
+    version: ~1.0.8
     repository: '@hmctspublic'
     # repository: file:///Users/markry/workspace/hmcts/cmc-citizen-frontend/charts/cmc-citizen-frontend
+    repository: file:///Users/kariml/Development/cmc-citizen-frontend/charts/cmc-citizen-frontend
   - name: draft-store-service
     version: ~1.0.4
     repository: '@hmctspublic'
