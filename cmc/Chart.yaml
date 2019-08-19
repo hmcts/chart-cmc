@@ -1,7 +1,7 @@
 apiVersion: v1
 description: A Helm chart for the HMCTS CMC product
 name: cmc
-version: 0.0.6
+version: 0.0.7
 keywords:
   - cmc
   - civil-money-claims

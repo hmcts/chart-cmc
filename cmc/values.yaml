@@ -218,8 +218,7 @@ rpe-service-auth-provider:
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: AAAAAAAAAAAAAAAA
 
 postgresql:
-  pgParameters:
-    maxConnections: 300
+  postgresqlConfiguration: { maxConnections": 300 }
   resources:
     requests:
       cpu: 25m
