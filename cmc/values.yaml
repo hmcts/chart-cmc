@@ -239,5 +239,5 @@ postgresql:
   postgresqlPassword: hmcts
   postgresqlDatabase: user-profile
   persistence:
-    enabled: false
+    enabled: true
 ########################
