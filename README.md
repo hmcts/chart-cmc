@@ -8,7 +8,7 @@ Make sure:
 
 In root dir:
 ```
-az acr helm repo add --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9     
+az acr helm repo add --name hmctspublic --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9     
 helm dependency update cmc 
 helm install --wait --timeout 120 --namespace money-claims --name cmc --debug -f cmc/values.{env}.yaml cmc
 ```
