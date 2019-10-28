@@ -114,6 +114,7 @@ rpe-send-letter-service:
     keyVaults:
     environment:
       FILE_CLEANUP_ENABLED: true
+      ENCRYPTION_ENABLED: false
       LETTER_TRACKING_DB_CONN_OPTIONS: ""
       LETTER_TRACKING_DB_NAME: send_letter
       LETTER_TRACKING_DB_USER_NAME: "hmcts"
