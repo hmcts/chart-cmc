@@ -22,6 +22,8 @@ cmc-claim-store:
       CLAIM_STORE_DB_PASSWORD: hmcts
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
+      PAY_URL: false
+      FEES_URL: false
   ccd:
     readinessDelay: 180
     livenessDelay: 180
@@ -107,12 +109,16 @@ cmc-citizen-frontend:
 rpe-send-letter-service:
   java:
     image: hmctspublic.azurecr.io/rpe/send-letter-service:latest
+    ingressHost: ""
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
     livenessPeriod: 60
     keyVaults:
     environment:
+      APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
+      SCHEDULING_ENABLED: false
+      FLYWAY_NOOP_STRATEGY: "false"
       FILE_CLEANUP_ENABLED: false
       ENCRYPTION_ENABLED: false
       LETTER_TRACKING_DB_CONN_OPTIONS: ""
