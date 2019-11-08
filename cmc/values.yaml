@@ -163,6 +163,7 @@ cmc-pdf-service:
 draft-store-service:
   java:
     image: hmctspublic.azurecr.io/draft-store/service:latest
+    ingressHost: ""
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -178,6 +179,7 @@ draft-store-service:
 fees-register-api:
   java:
     image: hmctspublic.azurecr.io/fees-register/api:latest
+    ingressHost: ""
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 45
@@ -207,6 +209,7 @@ payment-api:
 rpe-service-auth-provider:
   java:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    ingressHost: ""
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
