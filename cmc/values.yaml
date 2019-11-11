@@ -40,7 +40,7 @@ cmc-claim-store:
     importer:
       userprofile:
         enabled: true
-        image: hmctspublic.azurecr.io/cmc/user-profile-importer:db196q
+        image: hmctspublic.azurecr.io/ccd/user-profile-importer:db196q
         jurisdictions:
           - CMC
         users:
