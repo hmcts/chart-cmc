@@ -3,7 +3,7 @@ dependencies:
     version: ~5.3.0
     repository: '@stable'
   - name: cmc-claim-store
-    version: ~1.1.9
+    version: ~1.1.10
     repository: '@hmctspublic'
   - name: cmc-citizen-frontend
     version: ~1.0.8
