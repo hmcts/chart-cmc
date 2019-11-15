@@ -67,6 +67,8 @@ cmc-claim-store:
 cmc-citizen-frontend:
   nodejs:
     image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
+    memoryRequests: 512Mi
+    memoryLimits: 1024Mi 
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
