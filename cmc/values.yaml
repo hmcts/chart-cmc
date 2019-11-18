@@ -52,6 +52,8 @@ cmc-claim-store:
       definition:
         enabled: true
         image: hmctspublic.azurecr.io/cmc/ccd-definition-importer:1.5.0
+        environment: 
+          CCD_DEF_CLAIM_STORE_BASE_URL: ""
         definitionFilename: cmc-ccd.xlsx
         userRoles:
           - citizen
