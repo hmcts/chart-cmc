@@ -29,8 +29,8 @@ jobs:
        helmDeleteWait: "300"
        helmInstallWait: "300"
        helmInstallTimeout: "900"
-       helmTestTimeout: "900"       
-
+       helmTestTimeout: "900"
+          
 - job: Release
   # Make sure we have a tag to run this job
   condition: >
@@ -38,6 +38,7 @@ jobs:
         succeeded(),
         startsWith(variables['Build.SourceBranch'], 'refs/tags/')
       )
+      
   dependsOn: Validate
   pool:
     vmImage: 'Ubuntu 16.04'
