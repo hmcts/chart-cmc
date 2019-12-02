@@ -8,8 +8,232 @@ tags:
   postgresql-pod: false                 # any chart specific postgres
   blobstorage: false                    # blob storage for dm-store
 
+### CMC SERVICES ###
+cmc-claim-store:
+  java:
+    image: hmctspublic.azurecr.io/cmc/claim-store:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      CLAIM_STORE_DB_USERNAME: hmcts
+      CLAIM_STORE_DB_PASSWORD: hmcts
+      CMC_DB_USERNAME: hmcts
+      CMC_DB_PASSWORD: hmcts
+      PAY_URL: false
+      FEES_URL: false
+  ccd:
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    adminWeb:
+      enabled: true
+      environment:
+        NODE_TLS_REJECT_UNAUTHORIZED: 0
+    caseManagementWeb:
+      enabled: true
+      environment:
+        NODE_TLS_REJECT_UNAUTHORIZED: 0
+    importer:
+      userprofile:
+        enabled: true
+        image: hmctspublic.azurecr.io/ccd/user-profile-importer:db196q
+        jurisdictions:
+          - CMC
+        users:
+          - civilmoneyclaims+ccd@gmail.com|CMC|MoneyClaimCase|open
+        userProfileDatabasePort: 5432
+        userProfileDatabaseUser: hmcts
+        userProfileDatabasePassword: hmcts
+        userProfileDatabaseName: user-profile
+      definition:
+        enabled: true
+        image: hmctspublic.azurecr.io/cmc/ccd-definition-importer:1.5.2
+        definitionFilename: cmc-ccd.xlsx
+        userRoles:
+          - citizen
+          - caseworker-cmc
+          - caseworker-cmc-solicitor
+          - caseworker-cmc-systemupdate
+          - letter-holder
+          - caseworker-autotest1
+          - caseworker-cmc-anonymouscitizen
+          - caseworker-cmc-judge
+          - caseworker-cmc-legaladvisor
+
+cmc-citizen-frontend:
+  nodejs:
+    image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
+    memoryRequests: 512Mi
+    memoryLimits: 1024Mi 
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      IDAM_S2S_TOTP_SECRET: AAAAAAAAAAAAAAAA
+  idam-pr:
+    service:
+      name: Money Claims - Citizen
+  rpe-feature-toggle-api:
+    java:
+      readinessDelay: 180
+      livenessDelay: 180
+      readinessPeriod: 60
+      livenessPeriod: 60
+      keyVaults:
+      environment:
+        FEATURES_DB_NAME: features
+        FEATURES_DB_USER_NAME: hmcts
+        FEATURES_DB_PASSWORD: hmcts
+        ADMIN_USERNAME_TEST: admin@example.com
+        ADMIN_PASSWORD_TEST: Password
+        EDITOR_USERNAME_TEST: editor@example.com
+        EDITOR_PASSWORD_TEST: Password
+    importer:
+      adminUsername: admin@example.com
+      adminPassword: Password
+      cron:
+        enabled: false
+      oneoff:
+        command: /scripts/add-weighted-toggle.sh cmc_admissions 'CMC admissions' '1.0' &&
+          /scripts/add-weighted-toggle.sh cmc_directions_questionnaire 'CMC Directions Questionnaire' '1.0' &&
+          /scripts/add-weighted-toggle.sh cmc_mediation_pilot 'CMC Mediation Pilot' '1.0' &&
+          /scripts/add-toggle.sh cmc_defence_reminders 'CMC defence reminders' false
+        enabled: true
+        permissions: cmc-new-features-consent-given
+########################
+
+##### DEPENDENCIES #####
+rpe-send-letter-service:
+  java:
+    image: hmctspublic.azurecr.io/rpe/send-letter-service:latest
+    ingressHost: ""
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
+      SCHEDULING_ENABLED: false
+      FLYWAY_NOOP_STRATEGY: "false"
+      FILE_CLEANUP_ENABLED: false
+      ENCRYPTION_ENABLED: false
+      LETTER_TRACKING_DB_CONN_OPTIONS: ""
+      LETTER_TRACKING_DB_NAME: send_letter
+      LETTER_TRACKING_DB_USER_NAME: "hmcts"
+      LETTER_TRACKING_DB_PASSWORD: "hmcts"
+
+dm-store:
+  java:
+    image: hmctspublic.azurecr.io/dm/store:pr-334  # fix for postgres bug
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        disabled: true
+      STORAGE_ACCOUNT_KEY:
+        disabled: true
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
+        disabled: true
+    keyVaults:
+    environment:
+      ENABLE_DB_MIGRATE: 'true'
+      ENABLE_TTL: 'false'
+      SPRING_DATASOURCE_USERNAME: hmcts
+      SPRING_DATASOURCE_PASSWORD: hmcts
+      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
+      POSTGRES_STORAGE_ENABLED: 'true'
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
+      CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
+
+cmc-pdf-service:
+  java:
+    image: hmctspublic.azurecr.io/cmc/pdf-service:latest
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+
+draft-store-service:
+  java:
+    image: hmctspublic.azurecr.io/draft-store/service:latest
+    ingressHost: ""
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      DRAFT_STORE_DB_NAME: draftstore
+      DRAFT_STORE_DB_PORT: '5432'
+      DRAFT_STORE_DB_USER_NAME: hmcts
+      RUN_DB_MIGRATION_ON_STARTUP: 'true'
+      DRAFT_STORE_DB_PASSWORD: hmcts
+
+fees-register-api:
+  java:
+    image: hmctspublic.azurecr.io/fees-register/api:latest
+    ingressHost: ""
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 45
+    livenessPeriod: 45
+    keyVaults:
+    environment:
+      SPRING_DATASOURCE_USERNAME: hmcts
+      SPRING_DATASOURCE_PASSWORD: hmcts
+      SPRING_LIQUIBASE_ENABLED: true
+      ENABLE_FEE_LOADER: true
+
+payment-api:
+  java:
+    image: hmctspublic.azurecr.io/payment/api:latest
+    ingressHost: ""
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      PAYMENT_AUDIT_FILE: /tmp/payment-audit.log
+      ASB_CONNECTION_STRING: false
+      SPRING_DATASOURCE_USERNAME: hmcts
+      SPRING_DATASOURCE_PASSWORD: hmcts
+      SPRING_LIQUIBASE_ENABLED: true
+
+rpe-service-auth-provider:
+  java:
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    ingressHost: ""
+    readinessDelay: 180
+    livenessDelay: 180
+    readinessPeriod: 60
+    livenessPeriod: 60
+    keyVaults:
+    environment:
+      TESTING_SUPPORT_ENABLED: 'true'
+      MICROSERVICEKEYS_CMC: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CMC_CLAIM_SUBMIT_API: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CMC_LEGAL_FRONTEND: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CMC_CLAIM_STORE: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_EM_GW: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_DATA: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_DEFINITION: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_GATEWAY: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_CCD_GW: AAAAAAAAAAAAAAAA
+      MICROSERVICEKEYS_DG_DOCASSEMBLY_API: AAAAAAAAAAAAAAAA
+
 postgresql:
-  postgresqlConfiguration: { "maxConnections": 300 }
+  #postgresqlConfiguration: { "maxConnections": 300 }
   resources:
     requests:
       cpu: 25m
