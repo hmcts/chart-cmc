@@ -197,6 +197,7 @@ fees-register-api:
 payment-api:
   java:
     image: hmctspublic.azurecr.io/payment/api:latest
+    ingressHost: ""
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
