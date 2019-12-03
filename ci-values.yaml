@@ -10,23 +10,17 @@ cmc-claim-store:
     releaseNameOverride: demo-preview-cmc-claimstore
     secrets: 
       GOV_NOTIFY_API_KEY:
-          secretRef: cmc-aat-notify-api-key
-          key: key
+         disabled: true
       OAUTH2_CLIENT_SECRET:
-          secretRef: cmc-aat-oauth-client-secret
-          key: key
+         disabled: true
       IDAM_CASEWORKER_ANONYMOUS_USERNAME:
-          secretRef: cmc-aat-anonymous-caseworker-username
-          key: key
+        disabled: true
       IDAM_CASEWORKER_ANONYMOUS_PASSWORD:
-          secretRef: cmc-aat-anonymous-caseworker-password
-          key: key
+        disabled: true
       IDAM_CASEWORKER_SYSTEM_USERNAME:
-          secretRef: cmc-aat-system-update-username
-          key: key
+        disabled: true
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
-          secretRef: cmc-aat-system-update-password
-          key: key
+        disabled: true
     environment:
       SPRING_MAIL_HOST: mailhog 
       SPRING_MAIL_PORT: 1025
@@ -97,8 +91,7 @@ cmc-citizen-frontend:
     releaseNameOverride: "{{.Release.Name}}-cmc-citizen-web"
     secrets:
       OAUTH_CLIENT_SECRET:
-          secretRef: cmc-aat-citizen-oauth-client-secret
-          key: key
+        disabled: true
     environment:
       IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -160,8 +153,7 @@ payment-api:
     releaseNameOverride: "{{.Release.Name}}-payments"
     secrets: 
       GOV_PAY_AUTH_KEY_CMC:
-          secretRef: ccpay-aat-gov-pay-keys-cmc
-          key: key
+          disabled: true
     environment:
       AUTH_IDAM_CLIENT_BASEURL: https://idam-api.aat.platform.hmcts.net
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://{{.Release.Name}}-s2s"
