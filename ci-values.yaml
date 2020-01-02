@@ -21,23 +21,6 @@ cmc-claim-store:
         disabled: true
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
         disabled: true
-    environment:
-      SPRING_MAIL_HOST: mailhog 
-      SPRING_MAIL_PORT: 1025
-      CLAIM_STORE_DB_HOST: "{{.Release.Name}}-postgres"
-      CMC_DB_HOST: "{{.Release.Name}}-postgres"
-      CORE_CASE_DATA_API_URL: "http://{{.Release.Name}}-data-store-api"
-      FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
-      FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
-      PAY_URL: false
-      FEES_URL: false
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_AUTH_URL: "http://{{.Release.Name}}-s2s"
-      PDF_SERVICE_URL: "http://{{.Release.Name}}-pdf"
-      SEND_LETTER_URL: "http://{{.Release.Name}}-sendletter"
-      DOCUMENT_MANAGEMENT_URL: "http://{{.Release.Name}}-dmstore"
-      FRONTEND_BASE_URL: "https://cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal"
-      RESPOND_TO_CLAIM_URL: "https://cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal/first-contact/start"
   ccd:
     ingressHost: "cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal" 
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
@@ -92,15 +75,7 @@ cmc-citizen-frontend:
     secrets:
       OAUTH_CLIENT_SECRET:
         disabled: true
-    environment:
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
-      FEATURE_TOGGLES_API_URL: "http://{{.Release.Name}}-ftrtgl"
-      CLAIM_STORE_URL: "http://{{.Release.Name}}-cmc-claimstore"
-      IDAM_S2S_AUTH: "http://{{.Release.Name}}-s2s"
-      PAY_URL: "http://{{.Release.Name}}-payments"
-      FEES_URL: "http://{{.Release.Name}}-fees"
-      DRAFT_STORE_URL: "http://{{.Release.Name}}-draftstore"
+
   idam-pr:
     service:
       redirect_uri: "https://cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal/receiver"
@@ -109,26 +84,17 @@ cmc-citizen-frontend:
       apiUrl: "http://{{.Release.Name}}-ftrtgl/api/ff4j/store/features/"
     java:
       releaseNameOverride: "{{.Release.Name}}-ftrtgl"
-      environment:
-        FEATURES_DB_HOST: "{{.Release.Name}}-postgres"
+
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
     releaseNameOverride: "{{.Release.Name}}-sendletter"
-    environment:
-      FLYWAY_URL: "jdbc:postgresql://{{.Release.Name}}-postgres:5432/send_letter"
-      LETTER_TRACKING_DB_HOST: "{{.Release.Name}}-postgres"
-      S2S_URL: "http://{{.Release.Name}}-s2s"
 
 dm-store:
   java:
     releaseNameOverride: "{{.Release.Name}}-dmstore"
-    environment:
-      IDAM_USER_BASE_URI: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_BASE_URI: http://demo-preview-s2s
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{.Release.Name}}-postgres:5432/evidence"
 
 cmc-pdf-service:
   java:
@@ -137,16 +103,10 @@ cmc-pdf-service:
 draft-store-service:
   java:
     releaseNameOverride: "{{.Release.Name}}-draftstore"
-    environment:
-      IDAM_URL: https://idam-api.aat.platform.hmcts.net
-      S2S_URL: "http://{{.Release.Name}}-s2s"
-      DRAFT_STORE_DB_HOST: "{{.Release.Name}}-postgres"
 
 fees-register-api:
   java:
     releaseNameOverride: "{{.Release.Name}}-fees"
-    environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{.Release.Name}}-postgres:5432/fees_register"
 
 payment-api:
   java:
@@ -154,38 +114,11 @@ payment-api:
     secrets: 
       GOV_PAY_AUTH_KEY_CMC:
           disabled: true
-    environment:
-      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.aat.platform.hmcts.net
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://{{.Release.Name}}-s2s"
-      FEES_REGISTER_URL: "http://{{.Release.Name}}-fees"
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{.Release.Name}}-postgres:5432/payment_api"
-      SPRING_MAIL_HOST: mailhog
-      SPRING_MAIL_PORT: 1025
 
 rpe-service-auth-provider:
   java:
     releaseNameOverride: "{{.Release.Name}}-s2s"
 
 postgresql:
-  #postgresqlConfiguration: { "maxConnections": 300 }
-  resources:
-    requests:
-      cpu: 25m
-  initdbScripts:
-    init.sql: |-
-      CREATE DATABASE "claimstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "cmc" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "features" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "fees_register" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "payment_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "evidence" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "send_letter" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: hmcts
-  postgresqlPassword: hmcts
-  postgresqlDatabase: user-profile
-  persistence:
-    enabled: true
+  nameOverride: postgres
 ########################
