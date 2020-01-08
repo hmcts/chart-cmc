@@ -3,3 +3,4 @@ charts/**
 requirements.lock
 .DS_Store
 k8s/sealedsecrets/*
+.idea
