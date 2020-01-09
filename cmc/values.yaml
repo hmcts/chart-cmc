@@ -131,7 +131,7 @@ rpe-send-letter-service:
 
 dm-store:
   java:
-    image: hmctspublic.azurecr.io/dm/store:pr-334  # fix for postgres bug
+    image: hmctspublic.azurecr.io/dm/store:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
