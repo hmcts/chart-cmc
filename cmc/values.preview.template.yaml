@@ -63,6 +63,10 @@ cmc-claim-store:
         secretKeyRefName: ccd-aat-ccd-admin-web-oauth2-client-secret
         secretKeyRefKey: key
     idam-pr:
+      api:
+        url: https://idam-api.aat.platform.hmcts.net
+      web_public:
+        url: https://idam-web-public.aat.platform.hmcts.net
       releaseNameOverride: {{ .Release.Name }}-ccd-idam-pr
       redirect_uris:
         CCD:

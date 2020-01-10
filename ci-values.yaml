@@ -1,14 +1,17 @@
-  
 global:
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: idam-web-public.aat.platform.hmcts.net
+  subscriptionId: "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+  tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+  ccdIngress: chart-cmc-ccd-release.service.core-compute-preview.internal
+  cmcFrontendIngress: chart-cmc-citizen-frontend-release.service.core-compute-preview.internal
   devMode: true
 
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: demo-preview-cmc-claimstore
-    secrets: 
+    releaseNameOverride: "{{.Release.Name}}-claimstore"
+    secrets:
       GOV_NOTIFY_API_KEY:
          disabled: true
       OAUTH2_CLIENT_SECRET:
@@ -22,104 +25,78 @@ cmc-claim-store:
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
         disabled: true
   ccd:
-    ingressHost: cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal
-    #idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    #idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    s2sUrl: http://{{.Release.Name}}-s2s
-    draftStoreUrl: http://{{.Release.Name}}-draftstore
-    paymentsUrl: http://{{.Release.Name}}-payments
+    ingressHost: "{{ .Values.global.ccdIngress }}"
+    ingressIP: "10.97.17.51"
+    consulIP: "10.97.11.254"
+    idamApiUrl: "{{ .Values.global.idamApiUrl }}"
+    idamWebUrl: "{{ .Values.global.idamWebUrl }}"
     apiGateway:
       s2sKey: AAAAAAAAAAAAAAAA
-      idamClientSecret: 
-        fromSecret: true
-        secretKeyRefName: ccd-aat-ccd-api-gateway-oauth2-client-secret
-        secretKeyRefKey: key
+      idamClientSecret:
+        fromSecret: false
     dataStoreApi:
       s2sKey: AAAAAAAAAAAAAAAA
     definitionStoreApi:
       s2sKey: AAAAAAAAAAAAAAAA
     adminWeb:
       s2sKey: AAAAAAAAAAAAAAAA
-      idamClientSecret: 
-        fromSecret: true
-        secretKeyRefName: ccd-aat-ccd-admin-web-oauth2-client-secret
-        secretKeyRefKey: key
-    idam-pr:
-      releaseNameOverride: {{.Release.Name}}-ccd-idam-pr
-      service:
-        name: Money Claims - Citizen
-      redirect_uris:
-        CCD:
-          - https://case-management-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect
-        CCD Admin:
-          - https://admin-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect
+      idamClientSecret:
+        fromSecret: false
     importer:
       userprofile:
-        userProfileDatabaseHost: {{.Release.Name}}-postgres
+        enabled: false
       definition:
-        importerFromSecret: true
-        importerUsername: 
-          secretKeyRefName: cmc-aat-ccd-importer-username
-          secretKeyRefKey: key
-        importerPassword: 
-          secretKeyRefName: cmc-aat-ccd-importer-password
-          secretKeyRefKey: key
-        redirectUri: https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect
-    postgresql:
-      nameOverride: postgres
+        enabled: false
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal
-    memoryRequests: 512Mi
-    memoryLimits: 1024Mi 
-    releaseNameOverride: {{.Release.Name}}-cmc-citizen-web
+    ingressHost: "{{ .Values.global.cmcFrontendIngress }}"
+    releaseNameOverride: "{{.Release.Name}}-cmc-citizen-web"
     secrets:
       OAUTH_CLIENT_SECRET:
         disabled: true
-
   idam-pr:
     service:
-      redirect_uri: https://cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal/receiver
+      redirect_uri: "{{ .Values.global.cmcFrontendIngress }}/receiver"
   rpe-feature-toggle-api:
     importer:
-      apiUrl: http://{{.Release.Name}}-ftrtgl/api/ff4j/store/features/
+      apiUrl: "http://{{.Release.Name}}-ftrtgl/api/ff4j/store/features/"
     java:
-      releaseNameOverride: {{.Release.Name}}-ftrtgl
+      releaseNameOverride: "{{.Release.Name}}-ftrtgl"
 
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    releaseNameOverride: {{.Release.Name}}-sendletter
+    releaseNameOverride: "{{.Release.Name}}-sendletter"
 
 dm-store:
   java:
-    releaseNameOverride: {{.Release.Name}}-dmstore
+    releaseNameOverride: "{{.Release.Name}}-dmstore"
 
 cmc-pdf-service:
   java:
-    releaseNameOverride: {{.Release.Name}}-pdf
+    releaseNameOverride: "{{.Release.Name}}-pdf"
 
 draft-store-service:
   java:
-    releaseNameOverride: {{.Release.Name}}-draftstore
+    releaseNameOverride: "{{.Release.Name}}-draftstore"
 
 fees-register-api:
   java:
-    releaseNameOverride: {{.Release.Name}}-fees
+    releaseNameOverride: "{{.Release.Name}}-fees"
 
 payment-api:
   java:
-    releaseNameOverride: {{.Release.Name}}-payments
-    secrets: 
+    releaseNameOverride: "{{.Release.Name}}-payments"
+    secrets:
       GOV_PAY_AUTH_KEY_CMC:
           disabled: true
 
 rpe-service-auth-provider:
   java:
-    releaseNameOverride: {{.Release.Name}}-s2s
+    releaseNameOverride: "{{.Release.Name}}-s2s"
 
 postgresql:
   nameOverride: postgres
