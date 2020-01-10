@@ -46,6 +46,8 @@ cmc-claim-store:
         secretKeyRefKey: key
     idam-pr:
       releaseNameOverride: {{.Release.Name}}-ccd-idam-pr
+      service:
+        name: Money Claims - Citizen
       redirect_uris:
         CCD:
           - https://case-management-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect
