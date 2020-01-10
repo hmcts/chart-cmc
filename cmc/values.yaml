@@ -153,8 +153,6 @@ dm-store:
       POSTGRES_STORAGE_ENABLED: 'true'
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
-    blobstorage:
-      enabled: false
 
 cmc-pdf-service:
   java:

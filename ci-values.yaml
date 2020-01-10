@@ -1,6 +1,6 @@
   
 global:
-  idamApiUrl: "https://idam-api.aat.platform.hmcts.net"
+  idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: idam-web-public.aat.platform.hmcts.net
   devMode: true
 
@@ -22,12 +22,12 @@ cmc-claim-store:
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
         disabled: true
   ccd:
-    ingressHost: "cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal" 
-    idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    s2sUrl: "http://{{.Release.Name}}-s2s"
-    draftStoreUrl: "http://{{.Release.Name}}-draftstore"
-    paymentsUrl: "http://{{.Release.Name}}-payments"
+    ingressHost: cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal
+    #idamApiUrl: https://idam-api.aat.platform.hmcts.net
+    #idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    s2sUrl: http://{{.Release.Name}}-s2s
+    draftStoreUrl: http://{{.Release.Name}}-draftstore
+    paymentsUrl: http://{{.Release.Name}}-payments
     apiGateway:
       s2sKey: AAAAAAAAAAAAAAAA
       idamClientSecret: 
@@ -45,15 +45,15 @@ cmc-claim-store:
         secretKeyRefName: ccd-aat-ccd-admin-web-oauth2-client-secret
         secretKeyRefKey: key
     idam-pr:
-      releaseNameOverride: "{{.Release.Name}}-ccd-idam-pr"
+      releaseNameOverride: {{.Release.Name}}-ccd-idam-pr
       redirect_uris:
         CCD:
-          - "https://case-management-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect"
+          - https://case-management-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect
         CCD Admin:
-          - "https://admin-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect"
+          - https://admin-web-cmc-ccd-{{.Release.Name}}.service.core-compute-preview.internal/oauth2redirect
     importer:
       userprofile:
-        userProfileDatabaseHost: "{{.Release.Name}}-postgres"
+        userProfileDatabaseHost: {{.Release.Name}}-postgres
       definition:
         importerFromSecret: true
         importerUsername: 
@@ -62,62 +62,62 @@ cmc-claim-store:
         importerPassword: 
           secretKeyRefName: cmc-aat-ccd-importer-password
           secretKeyRefKey: key
-        redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+        redirectUri: https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect
     postgresql:
       nameOverride: postgres
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal"
+    ingressHost: cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal
     memoryRequests: 512Mi
     memoryLimits: 1024Mi 
-    releaseNameOverride: "{{.Release.Name}}-cmc-citizen-web"
+    releaseNameOverride: {{.Release.Name}}-cmc-citizen-web
     secrets:
       OAUTH_CLIENT_SECRET:
         disabled: true
 
   idam-pr:
     service:
-      redirect_uri: "https://cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal/receiver"
+      redirect_uri: https://cmc-citizen-frontend-{{.Release.Name}}.service.core-compute-preview.internal/receiver
   rpe-feature-toggle-api:
     importer:
-      apiUrl: "http://{{.Release.Name}}-ftrtgl/api/ff4j/store/features/"
+      apiUrl: http://{{.Release.Name}}-ftrtgl/api/ff4j/store/features/
     java:
-      releaseNameOverride: "{{.Release.Name}}-ftrtgl"
+      releaseNameOverride: {{.Release.Name}}-ftrtgl
 
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    releaseNameOverride: "{{.Release.Name}}-sendletter"
+    releaseNameOverride: {{.Release.Name}}-sendletter
 
 dm-store:
   java:
-    releaseNameOverride: "{{.Release.Name}}-dmstore"
+    releaseNameOverride: {{.Release.Name}}-dmstore
 
 cmc-pdf-service:
   java:
-    releaseNameOverride: "{{.Release.Name}}-pdf"
+    releaseNameOverride: {{.Release.Name}}-pdf
 
 draft-store-service:
   java:
-    releaseNameOverride: "{{.Release.Name}}-draftstore"
+    releaseNameOverride: {{.Release.Name}}-draftstore
 
 fees-register-api:
   java:
-    releaseNameOverride: "{{.Release.Name}}-fees"
+    releaseNameOverride: {{.Release.Name}}-fees
 
 payment-api:
   java:
-    releaseNameOverride: "{{.Release.Name}}-payments"
+    releaseNameOverride: {{.Release.Name}}-payments
     secrets: 
       GOV_PAY_AUTH_KEY_CMC:
           disabled: true
 
 rpe-service-auth-provider:
   java:
-    releaseNameOverride: "{{.Release.Name}}-s2s"
+    releaseNameOverride: {{.Release.Name}}-s2s
 
 postgresql:
   nameOverride: postgres
