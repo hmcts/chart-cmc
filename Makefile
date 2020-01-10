@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := all
 CHART := cmc
 RELEASE := chart-${CHART}-release
-NAMESPACE := chart-tests
+NAMESPACE := money-claims
 TEST := ${RELEASE}-test-service
 ACR := hmctspublic
 ACR_SUBSCRIPTION := DCD-CNP-DEV
