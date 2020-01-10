@@ -2,7 +2,7 @@
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: {{ .Release.Name }}-claimstore
+    releaseNameOverride: "{{ .Release.Name }}-claimstore"
     secrets: 
       GOV_NOTIFY_API_KEY:
           secretRef: cmc-aat-notify-api-key
@@ -25,27 +25,27 @@ cmc-claim-store:
     environment:
       SPRING_MAIL_HOST: mailhog 
       SPRING_MAIL_PORT: 1025
-      CLAIM_STORE_DB_HOST: {{ .Release.Name }}-postgres
-      CMC_DB_HOST: {{ .Release.Name }}-postgres
-      CORE_CASE_DATA_API_URL: http://{{ .Release.Name }}-data-store-api
+      CLAIM_STORE_DB_HOST: "{{ .Release.Name }}-postgres"
+      CMC_DB_HOST: "{{ .Release.Name }}-postgres"
+      CORE_CASE_DATA_API_URL: "http://{{ .Release.Name }}-data-store-api"
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
+      IDAM_API_URL: "{{ .Values.global.idamApiUrl }}"
+      IDAM_S2S_AUTH_URL: "http://{{ .Release.Name }}-s2s"
+      PDF_SERVICE_URL: "http://{{ .Release.Name }}-pdf"
+      SEND_LETTER_URL: "http://{{ .Release.Name }}-sendletter"
+      DOCUMENT_MANAGEMENT_URL: "http://{{ .Release.Name }}-dmstore"
+      FRONTEND_BASE_URL: "https://cmc-citizen-frontend-chart.service.core-compute-preview.internal"
+      RESPOND_TO_CLAIM_URL: "https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/first-contact/start"
       PAY_URL: false
       FEES_URL: false
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_AUTH_URL: http://{{ .Release.Name }}-s2s
-      PDF_SERVICE_URL: http://{{ .Release.Name }}-pdf
-      SEND_LETTER_URL: http://{{ .Release.Name }}-sendletter
-      DOCUMENT_MANAGEMENT_URL: http://{{ .Release.Name }}-dmstore
-      FRONTEND_BASE_URL: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal 
-      RESPOND_TO_CLAIM_URL: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/first-contact/start
   ccd:
-    ingressHost: cmc-ccd-chart.service.core-compute-preview.internal 
-    idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    s2sUrl: http://{{ .Release.Name }}-s2s
-    draftStoreUrl: http://{{ .Release.Name }}-draftstore
-    paymentsUrl: http://{{ .Release.Name }}-payments
+    ingressHost: "cmc-ccd-chart.service.core-compute-preview.internal"
+    idamApiUrl: "{{ .Values.global.idamApiUrl }}"
+    idamWebUrl: "{{ .Values.global.idamWebUrl }}"
+    s2sUrl: "http://{{ .Release.Name }}-s2s"
+    draftStoreUrl: "http://{{ .Release.Name }}-draftstore"
+    paymentsUrl: "http://{{ .Release.Name }}-payments"
     apiGateway:
       s2sKey: AAAAAAAAAAAAAAAA
       idamClientSecret: 
@@ -64,18 +64,18 @@ cmc-claim-store:
         secretKeyRefKey: key
     idam-pr:
       api:
-        url: https://idam-api.aat.platform.hmcts.net
+        url: "{{ .Values.global.idamApiUrl }}"
       web_public:
-        url: https://idam-web-public.aat.platform.hmcts.net
-      releaseNameOverride: {{ .Release.Name }}-ccd-idam-pr
+        url: "{{ .Values.global.idamWebUrl }}"
+      releaseNameOverride: "{{ .Release.Name }}-ccd-idam-pr"
       redirect_uris:
         CCD:
-          - https://case-management-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect
+          - "https://case-management-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect"
         CCD Admin:
-          - https://admin-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect
+          - "https://admin-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect"
     importer:
       userprofile:
-        userProfileDatabaseHost: {{ .Release.Name }}-postgres
+        userProfileDatabaseHost: "{{ .Release.Name }}-postgres"
       definition:
         importerFromSecret: true
         importerUsername: 
@@ -90,89 +90,94 @@ cmc-claim-store:
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: cmc-citizen-frontend-chart.service.core-compute-preview.internal
+    ingressHost: "cmc-citizen-frontend-chart.service.core-compute-preview.internal"
     memoryRequests: 512Mi
     memoryLimits: 1024Mi 
-    releaseNameOverride: {{ .Release.Name }}-citizen-web
+    releaseNameOverride: "{{ .Release.Name }}-citizen-web"
     secrets:
       OAUTH_CLIENT_SECRET:
           secretRef: cmc-aat-citizen-oauth-client-secret
           key: key
     environment:
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
-      FEATURE_TOGGLES_API_URL: http://{{ .Release.Name }}-ftrtgl
-      CLAIM_STORE_URL: http://{{ .Release.Name }}-claimstore
-      IDAM_S2S_AUTH: http://{{ .Release.Name }}-s2s
-      PAY_URL: http://{{ .Release.Name }}-payments
-      FEES_URL: http://{{ .Release.Name }}-fees
-      DRAFT_STORE_URL: http://{{ .Release.Name }}-draftstore
+      IDAM_API_URL: "{{ .Values.global.idamApiUrl }}"
+      IDAM_AUTHENTICATION_WEB_URL: "{{ .Values.global.idamWebUrl }}"
+      FEATURE_TOGGLES_API_URL: "http://{{ .Release.Name }}-ftrtgl"
+      CLAIM_STORE_URL: "http://{{ .Release.Name }}-claimstore"
+      IDAM_S2S_AUTH: "http://{{ .Release.Name }}-s2s"
+      PAY_URL: "http://{{ .Release.Name }}-payments"
+      FEES_URL: "http://{{ .Release.Name }}-fees"
+      DRAFT_STORE_URL: "http://{{ .Release.Name }}-draftstore"
   idam-pr:
     service:
-      redirect_uri: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/receiver
+      redirect_uri: "https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
-      apiUrl: http://{{ .Release.Name }}-ftrtgl/api/ff4j/store/features/
+      apiUrl: "http://{{ .Release.Name }}-ftrtgl/api/ff4j/store/features/"
     java:
-      releaseNameOverride: {{ .Release.Name }}-ftrtgl
+      releaseNameOverride: "{{ .Release.Name }}-ftrtgl"
       environment:
-        FEATURES_DB_HOST: {{ .Release.Name }}-postgres
+        FEATURES_DB_HOST: "{{ .Release.Name }}-postgres"
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    releaseNameOverride: {{ .Release.Name }}-sendletter
+    releaseNameOverride: "{{ .Release.Name }}-sendletter"
     environment:
-      FLYWAY_URL: jdbc:postgresql://{{ .Release.Name }}-postgres:5432/send_letter
-      LETTER_TRACKING_DB_HOST: {{ .Release.Name }}-postgres
-      S2S_URL: http://{{ .Release.Name }}-s2s
+      FLYWAY_URL: "jdbc:postgresql://{{ .Release.Name }}-postgres:5432/send_letter"
+      LETTER_TRACKING_DB_HOST: "{{ .Release.Name }}-postgres"
+      S2S_URL: "http://{{ .Release.Name }}-s2s"
 
 dm-store:
   java:
-    releaseNameOverride: {{ .Release.Name }}-dmstore
+    releaseNameOverride: "{{ .Release.Name }}-dmstore"
     environment:
-      IDAM_USER_BASE_URI: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_BASE_URI: http://{{ .Release.Name }}-s2s
-      SPRING_DATASOURCE_URL: jdbc:postgresql://{{ .Release.Name }}-postgres:5432/evidence
+      IDAM_USER_BASE_URI: "{{ .Values.global.idamApiUrl }}"
+      IDAM_S2S_BASE_URI: "http://{{ .Release.Name }}-s2s"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ .Release.Name }}-postgres:5432/evidence"
 
 cmc-pdf-service:
   java:
-    releaseNameOverride: {{ .Release.Name }}-pdf
+    releaseNameOverride: "{{ .Release.Name }}-pdf"
 
 draft-store-service:
   java:
-    releaseNameOverride: {{ .Release.Name }}-draftstore
+    releaseNameOverride: "{{ .Release.Name }}-draftstore"
     environment:
-      IDAM_URL: https://idam-api.aat.platform.hmcts.net
-      S2S_URL: http://{{ .Release.Name }}-s2s
-      DRAFT_STORE_DB_HOST: {{ .Release.Name }}-postgres
+      IDAM_URL: "{{ .Values.global.idamApiUrl }}"
+      S2S_URL: "http://{{ .Release.Name }}-s2s"
+      DRAFT_STORE_DB_HOST: "{{ .Release.Name }}-postgres"
 
 fees-register-api:
   java:
-    releaseNameOverride: {{ .Release.Name }}-fees
+    releaseNameOverride: "{{ .Release.Name }}-fees"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://{{ .Release.Name }}-postgres:5432/fees_register
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ .Release.Name }}-postgres:5432/fees_register"
 
 payment-api:
   java:
-    releaseNameOverride: {{ .Release.Name }}-payments
+    releaseNameOverride: "{{ .Release.Name }}-payments"
     secrets: 
       GOV_PAY_AUTH_KEY_CMC:
-          secretRef: ccpay-aat-gov-pay-keys-cmc
+          secretRef: "ccpay-aat-gov-pay-keys-cmc"
           key: key
     environment:
-      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.aat.platform.hmcts.net
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://{{ .Release.Name }}-s2s
-      FEES_REGISTER_URL: http://{{ .Release.Name }}-fees
-      SPRING_DATASOURCE_URL: jdbc:postgresql://{{ .Release.Name }}-postgres:5432/payment_api
+      AUTH_IDAM_CLIENT_BASEURL: "{{ .Values.global.idamApiUrl }}"
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://{{ .Release.Name }}-s2s"
+      FEES_REGISTER_URL: "http://{{ .Release.Name }}-fees"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ .Release.Name }}-postgres:5432/payment_api"
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
 
 rpe-service-auth-provider:
   java:
-    releaseNameOverride: {{ .Release.Name }}-s2s
+    releaseNameOverride: "{{ .Release.Name }}-s2s"
 
 postgresql:
   nameOverride: postgres
+
+global:
+  idamApiUrl: "https://idam-api.aat.platform.hmcts.net"
+  idamWebUrl: "https://idam-web-public.aat.platform.hmcts.net"
+
 ########################

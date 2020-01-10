@@ -22,10 +22,10 @@ lint:
 	helm lint ${CHART} -f ci-values.yaml
 
 deploy:
-	helm install ${CHART} --name ${RELEASE} --namespace ${NAMESPACE} -f ci-values.yaml -f cmc/values.yaml --wait --timeout 600
+	helm install ${CHART} --name ${RELEASE} --namespace ${NAMESPACE} -f ci-values.yaml --wait --timeout 600
 
 upgrade:
-	helm upgrade --install ${RELEASE} ${CHART}  --namespace ${NAMESPACE} -f cmc/ci-values.yaml -f cmc/values.yaml --wait --timeout 600
+	helm upgrade --install ${RELEASE} ${CHART}  --namespace ${NAMESPACE} -f ci-values.yaml --wait --timeout 600
 
 test:
 	helm test ${RELEASE}
