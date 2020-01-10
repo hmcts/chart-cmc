@@ -51,7 +51,7 @@ cmc-claim-store:
         userProfileDatabaseName: user-profile
       definition:
         enabled: true
-        image: hmctspublic.azurecr.io/cmc/ccd-definition-importer:1.5.2
+        image: hmctspublic.azurecr.io/cmc/ccd-definition-importer:1.5.6
         definitionFilename: cmc-ccd.xlsx
         userRoles:
           - citizen
@@ -131,7 +131,7 @@ rpe-send-letter-service:
 
 dm-store:
   java:
-    image: hmctspublic.azurecr.io/dm/store:pr-334  # fix for postgres bug
+    image: hmctspublic.azurecr.io/dm/store:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -153,6 +153,8 @@ dm-store:
       POSTGRES_STORAGE_ENABLED: 'true'
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
+    blobstorage:
+      enabled: false
 
 cmc-pdf-service:
   java:
