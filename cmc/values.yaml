@@ -6,7 +6,7 @@ tags:
   ccd-idam-pr: true                     # claim-store chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
-  blobstorage: false                    # blob storage for dm-store
+  blobstorage: true                     # blob storage for dm-store
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -154,7 +154,7 @@ dm-store:
       STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
     blobstorage:
-      enabled: false
+      enabled: true
 
 cmc-pdf-service:
   java:
