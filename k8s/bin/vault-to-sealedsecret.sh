@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# vault-to-sealedsecret.sh aat /Users/markry/workspace/hmcts/cnp-flux-config/k8s/aat/pub-cert.pem money-claims-test
+# vault-to-sealedsecret.sh aat /Users/kariml/Development/cnp-flux-config/k8s/aat/pub-cert.pem money-claims
+
 
 env=$1
 cert=$2

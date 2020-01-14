@@ -1,0 +1,16 @@
+{
+    "apiVersion": "v1",
+    "data": {
+        "key": "Y21jLWFub255bW91cy1jYXNld29ya2VyQGhtY3RzLm5ldA=="
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2020-01-13T16:35:18Z",
+        "name": "anonymous-caseworker-username",
+        "namespace": "money-claims",
+        "resourceVersion": "138385",
+        "selfLink": "/api/v1/namespaces/money-claims/secrets/anonymous-caseworker-username",
+        "uid": "f9c8c450-952e-4006-a5c1-493e5935b6a7"
+    },
+    "type": "Opaque"
+}

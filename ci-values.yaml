@@ -1,16 +1,22 @@
-global:
-  idamApiUrl: https://idam-api.aat.platform.hmcts.net
-  idamWebUrl: idam-web-public.aat.platform.hmcts.net
-  subscriptionId: "1c4f0704-a29e-403d-b719-b90c34ef14c9"
-  tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
-  ccdIngress: chart-cmc-ccd-release.service.core-compute-preview.internal
-  cmcFrontendIngress: chart-cmc-citizen-frontend-release.service.core-compute-preview.internal
-  devMode: true
+tags:
+  cmc-claim-store-postgresql-pod: false # claim-store chart
+  cmc-citizen-frontend-pod: false       # claim-store chart
+  cmc-ccd-stack: true                   # claim-store chart
+  idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
+  ccd-idam-pr: false                    # claim-store chart - will add IDAM redirect urls
+  rpe-feature-toggle-api-pod: true      # citizen-frontend dep
+  postgresql-pod: false                 # any chart specific postgres
+  blobstorage: true
+
+#global:
+#  subscriptionId: "1c4f0704-a29e-403d-b719-b90c34ef14c9"
+#  tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+#  devMode: true
 
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: "{{.Release.Name}}-claimstore"
+    releaseNameOverride: "chart-cmc-release-claimstore"
     secrets:
       GOV_NOTIFY_API_KEY:
          disabled: true
@@ -25,11 +31,11 @@ cmc-claim-store:
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
         disabled: true
   ccd:
-    ingressHost: "{{ .Values.global.ccdIngress }}"
+    ingressHost: "chart-cmc-ccd-release.service.core-compute-preview.internal"
     ingressIP: "10.97.17.51"
     consulIP: "10.97.11.254"
-    idamApiUrl: "{{ .Values.global.idamApiUrl }}"
-    idamWebUrl: "{{ .Values.global.idamWebUrl }}"
+    idamApiUrl: "https://idam-api.aat.platform.hmcts.net"
+    idamWebUrl: "https://idam-web-public.aat.platform.hmcts.net"
     apiGateway:
       s2sKey: AAAAAAAAAAAAAAAA
       idamClientSecret:
@@ -48,55 +54,55 @@ cmc-claim-store:
       definition:
         enabled: false
 
-cmc-citizen-frontend:
-  nodejs:
-    ingressHost: "{{ .Values.global.cmcFrontendIngress }}"
-    releaseNameOverride: "{{.Release.Name}}-cmc-citizen-web"
-    secrets:
-      OAUTH_CLIENT_SECRET:
-        disabled: true
-  idam-pr:
-    service:
-      redirect_uri: "{{ .Values.global.cmcFrontendIngress }}/receiver"
-  rpe-feature-toggle-api:
-    importer:
-      apiUrl: "http://{{.Release.Name}}-ftrtgl/api/ff4j/store/features/"
-    java:
-      releaseNameOverride: "{{.Release.Name}}-ftrtgl"
+#cmc-citizen-frontend:
+#  nodejs:
+#    ingressHost: "chart-cmc-citizen-frontend-release.service.core-compute-preview.internal"
+#    releaseNameOverride: "chart-cmc-release-citizen-web"
+#    secrets:
+#      OAUTH_CLIENT_SECRET:
+#        disabled: true
+#  idam-pr:
+#    service:
+#      redirect_uri: "chart-cmc-citizen-frontend-release.service.core-compute-preview.internal/receiver"
+#  rpe-feature-toggle-api:
+#    importer:
+#      apiUrl: "http://chart-cmc-release-ftrtgl/api/ff4j/store/features/"
+#    java:
+#      releaseNameOverride: "chart-cmc-release-ftrtgl"
 
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    releaseNameOverride: "{{.Release.Name}}-sendletter"
+    releaseNameOverride: "chart-cmc-release-sendletter"
 
 dm-store:
   java:
-    releaseNameOverride: "{{.Release.Name}}-dmstore"
+    releaseNameOverride: "chart-cmc-release-dmstore"
 
 cmc-pdf-service:
   java:
-    releaseNameOverride: "{{.Release.Name}}-pdf"
+    releaseNameOverride: "chart-cmc-release-pdf"
 
 draft-store-service:
   java:
-    releaseNameOverride: "{{.Release.Name}}-draftstore"
+    releaseNameOverride: "chart-cmc-release-draftstore"
 
 fees-register-api:
   java:
-    releaseNameOverride: "{{.Release.Name}}-fees"
+    releaseNameOverride: "chart-cmc-release-fees"
 
 payment-api:
   java:
-    releaseNameOverride: "{{.Release.Name}}-payments"
+    releaseNameOverride: "chart-cmc-release-payments"
     secrets:
       GOV_PAY_AUTH_KEY_CMC:
           disabled: true
 
 rpe-service-auth-provider:
   java:
-    releaseNameOverride: "{{.Release.Name}}-s2s"
+    releaseNameOverride: "chart-cmc-release-s2s"
 
 postgresql:
   nameOverride: postgres

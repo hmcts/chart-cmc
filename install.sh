@@ -4,7 +4,7 @@
 #  --install --wait --timeout ${2} \
 #  --namespace money-claims-test
 
-helm upgrade chart-cmc-release cmc \
+helm upgrade chart-cmc-preview cmc \
   -f cmc/values.yaml -f cmc/values.preview.template.yaml \
-  --install --wait --timeout 600 \
+  --install --wait --timeout 900 \
   --namespace money-claims
