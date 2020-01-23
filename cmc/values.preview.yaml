@@ -1,84 +1,89 @@
-
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: demo-preview-cmc-claimstore
-    secrets: 
+    releaseNameOverride: "chart-cmc-preview-claimstore"
+    secrets:
       GOV_NOTIFY_API_KEY:
-          secretRef: cmc-aat-notify-api-key
-          key: key
+        secretRef: notify-api-key
+        key: key
       OAUTH2_CLIENT_SECRET:
-          secretRef: cmc-aat-oauth-client-secret
-          key: key
+        secretRef: oauth-client-secret
+        key: key
       IDAM_CASEWORKER_ANONYMOUS_USERNAME:
-          secretRef: cmc-aat-anonymous-caseworker-username
-          key: key
+        secretRef: anonymous-caseworker-username
+        key: key
       IDAM_CASEWORKER_ANONYMOUS_PASSWORD:
-          secretRef: cmc-aat-anonymous-caseworker-password
-          key: key
+        secretRef: anonymous-caseworker-password
+        key: key
       IDAM_CASEWORKER_SYSTEM_USERNAME:
-          secretRef: cmc-aat-system-update-username
-          key: key
+        secretRef: system-update-username
+        key: key
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
-          secretRef: cmc-aat-system-update-password
-          key: key
+        secretRef: system-update-password
+        key: key
     environment:
-      SPRING_MAIL_HOST: mailhog 
+      SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
-      CLAIM_STORE_DB_HOST: demo-preview-postgres
-      CMC_DB_HOST: demo-preview-postgres
-      CORE_CASE_DATA_API_URL: http://demo-preview-data-store-api
+      CLAIM_STORE_DB_HOST: "chart-cmc-preview-postgres"
+      CMC_DB_HOST: "chart-cmc-preview-postgres"
+      CORE_CASE_DATA_API_URL: "http://chart-cmc-preview-data-store-api"
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
-      PAY_URL: false
-      FEES_URL: false
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_AUTH_URL: http://demo-preview-s2s
-      PDF_SERVICE_URL: http://demo-preview-pdf
-      SEND_LETTER_URL: http://demo-preview-sendletter
-      DOCUMENT_MANAGEMENT_URL: http://demo-preview-dmstore
-      FRONTEND_BASE_URL: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal 
-      RESPOND_TO_CLAIM_URL: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/first-contact/start
+      IDAM_API_URL: "https://idam-api.aat.platform.hmcts.net"
+      IDAM_S2S_AUTH_URL: "http://chart-cmc-preview-s2s"
+      PDF_SERVICE_URL: "http://chart-cmc-preview-pdf"
+      SEND_LETTER_URL: "http://chart-cmc-preview-sendletter"
+      DOCUMENT_MANAGEMENT_URL: "http://chart-cmc-preview-dmstore"
+      FRONTEND_BASE_URL: "https://chart-cmc-preview-citizen-frontend.service.core-compute-preview.internal"
+      RESPOND_TO_CLAIM_URL: "https://chart-cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: false
+      APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
+      PAY_URL: "http://chart-cmc-preview-payments"
+      FEES_URL: "http://chart-cmc-preview-fees"
+
   ccd:
-    ingressHost: cmc-ccd-chart.service.core-compute-preview.internal 
-    idamApiUrl: https://idam-api.aat.platform.hmcts.net
-    idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    s2sUrl: http://demo-preview-s2s
-    draftStoreUrl: http://demo-preview-draftstore
-    paymentsUrl: http://demo-preview-payments
+    ingressHost: "cmc-ccd-chart.service.core-compute-preview.internal"
+    idamApiUrl: "https://idam-api.aat.platform.hmcts.net"
+    idamWebUrl: "https://idam-web-public.aat.platform.hmcts.net"
+    s2sUrl: "http://chart-cmc-preview-s2s"
+    draftStoreUrl: "http://chart-cmc-preview-draftstore"
+    paymentsUrl: "http://chart-cmc-preview-payments"
     apiGateway:
       s2sKey: AAAAAAAAAAAAAAAA
-      idamClientSecret: 
+      idamClientSecret:
         fromSecret: true
-        secretKeyRefName: ccd-aat-ccd-api-gateway-oauth2-client-secret
+        secretKeyRefName: ccd-api-gateway-oauth2-client-secret
         secretKeyRefKey: key
     dataStoreApi:
       s2sKey: AAAAAAAAAAAAAAAA
     definitionStoreApi:
       s2sKey: AAAAAAAAAAAAAAAA
     adminWeb:
-      s2sKey: AAAAAAAAAAAAAAAA
-      idamClientSecret: 
-        fromSecret: true
-        secretKeyRefName: ccd-aat-ccd-admin-web-oauth2-client-secret
-        secretKeyRefKey: key
+      enabled: false
+    caseManagementWeb:
+      enabled: false
     idam-pr:
-      releaseNameOverride: demo-preview-ccd-idam-pr
+      api:
+        url: "https://idam-api.aat.platform.hmcts.net"
+      web_public:
+        url: "https://idam-web-public.aat.platform.hmcts.net"
+      releaseNameOverride: "chart-cmc-preview-ccd-idam-pr"
       redirect_uris:
         CCD:
-          - https://case-management-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect
+          - "https://chart-cmc-preview-case-management-web.service.core-compute-preview.internal/oauth2redirect"
         CCD Admin:
-          - https://admin-web-cmc-ccd-chart.service.core-compute-preview.internal/oauth2redirect
+          - "https://chart-cmc-preview-admin-web-ccd.service.core-compute-preview.internal/oauth2redirect"
     importer:
       userprofile:
-        userProfileDatabaseHost: demo-preview-postgres
+        userProfileDatabaseHost: "chart-cmc-preview-postgres"
       definition:
         importerFromSecret: true
-        importerUsername: 
-          secretKeyRefName: cmc-aat-ccd-importer-username
+        importerUsername:
+          secretKeyRefName: ccd-importer-username
           secretKeyRefKey: key
-        importerPassword: 
-          secretKeyRefName: cmc-aat-ccd-importer-password
+        importerPassword:
+          secretKeyRefName: ccd-importer-password
           secretKeyRefKey: key
         redirectUri: "https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
     postgresql:
@@ -86,89 +91,108 @@ cmc-claim-store:
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: cmc-citizen-frontend-chart.service.core-compute-preview.internal
+    ingressHost: "chart-cmc-preview-citizen-frontend.service.core-compute-preview.internal"
     memoryRequests: 512Mi
-    memoryLimits: 1024Mi 
-    releaseNameOverride: demo-preview-cmc-citizen-web
+    memoryLimits: 1024Mi
+    releaseNameOverride: "chart-cmc-preview-citizen-web"
     secrets:
       OAUTH_CLIENT_SECRET:
-          secretRef: cmc-aat-citizen-oauth-client-secret
-          key: key
+        secretRef: citizen-oauth-client-secret
+        key: key
     environment:
-      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      IDAM_AUTHENTICATION_WEB_URL: https://idam-web-public.aat.platform.hmcts.net
-      FEATURE_TOGGLES_API_URL: http://demo-preview-ftrtgl
-      CLAIM_STORE_URL: http://demo-preview-cmc-claimstore
-      IDAM_S2S_AUTH: http://demo-preview-s2s
-      PAY_URL: http://demo-preview-payments
-      FEES_URL: http://demo-preview-fees
-      DRAFT_STORE_URL: http://demo-preview-draftstore
+      IDAM_API_URL: "https://idam-api.aat.platform.hmcts.net"
+      IDAM_AUTHENTICATION_WEB_URL: "https://idam-web-public.aat.platform.hmcts.net"
+      FEATURE_TOGGLES_API_URL: "http://chart-cmc-preview-ftrtgl"
+      CLAIM_STORE_URL: "http://chart-cmc-preview-claimstore"
+      IDAM_S2S_AUTH: "http://chart-cmc-preview-s2s"
+      PAY_URL: "http://chart-cmc-preview-payments"
+      FEES_URL: "http://chart-cmc-preview-fees"
+      DRAFT_STORE_URL: "http://chart-cmc-preview-draftstore"
+      FEATURE_MEDIATION: true
+      FEATURE_MEDIATION_PILOT: true
+      FEATURE_DIRECTIONS_QUESTIONNAIRE: true
+      FEATURE_ADMISSIONS: true
+      FEATURE_INVERSION_OF_CONTROL: false
+
   idam-pr:
     service:
-      redirect_uri: https://cmc-citizen-frontend-chart.service.core-compute-preview.internal/receiver
+      redirect_uri: "https://chart-cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
-      apiUrl: http://demo-preview-ftrtgl/api/ff4j/store/features/
+      apiUrl: "http://chart-cmc-preview-ftrtgl/api/ff4j/store/features/"
     java:
-      releaseNameOverride: demo-preview-ftrtgl
+      releaseNameOverride: "chart-cmc-preview-ftrtgl"
       environment:
-        FEATURES_DB_HOST: demo-preview-postgres
+        FEATURES_DB_HOST: "chart-cmc-preview-postgres"
 ########################
 
 ##### DEPENDENCIES #####
 rpe-send-letter-service:
   java:
-    releaseNameOverride: demo-preview-sendletter
+    releaseNameOverride: "chart-cmc-preview-sendletter"
     environment:
-      FLYWAY_URL: "jdbc:postgresql://demo-preview-postgres:5432/send_letter"
-      LETTER_TRACKING_DB_HOST: demo-preview-postgres
-      S2S_URL: http://demo-preview-s2s
+      FLYWAY_URL: "jdbc:postgresql://chart-cmc-preview-postgres:5432/send_letter"
+      LETTER_TRACKING_DB_HOST: "chart-cmc-preview-postgres"
+      S2S_URL: "http://chart-cmc-preview-s2s"
 
 dm-store:
   java:
-    releaseNameOverride: demo-preview-dmstore
+    releaseNameOverride: "chart-cmc-preview-dmstore"
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        secretRef: storage-secret-chart-cmc-preview-blobstorage
+        key: storageAccountName
+      STORAGE_ACCOUNT_KEY:
+        secretRef: storage-secret-chart-cmc-preview-blobstorage
+        key: accessKey
     environment:
-      IDAM_USER_BASE_URI: https://idam-api.aat.platform.hmcts.net
-      IDAM_S2S_BASE_URI: http://demo-preview-s2s
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://demo-preview-postgres:5432/evidence"
+      IDAM_USER_BASE_URI: "https://idam-api.aat.platform.hmcts.net"
+      IDAM_S2S_BASE_URI: "http://chart-cmc-preview-s2s"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://chart-cmc-preview-postgres:5432/evidence"
 
 cmc-pdf-service:
   java:
-    releaseNameOverride: demo-preview-pdf
+    releaseNameOverride: "chart-cmc-preview-pdf"
 
 draft-store-service:
   java:
-    releaseNameOverride: demo-preview-draftstore
+    releaseNameOverride: "chart-cmc-preview-draftstore"
     environment:
-      IDAM_URL: https://idam-api.aat.platform.hmcts.net
-      S2S_URL: http://demo-preview-s2s
-      DRAFT_STORE_DB_HOST: demo-preview-postgres
+      IDAM_URL: "https://idam-api.aat.platform.hmcts.net"
+      S2S_URL: "http://chart-cmc-preview-s2s"
+      DRAFT_STORE_DB_HOST: "chart-cmc-preview-postgres"
 
 fees-register-api:
   java:
-    releaseNameOverride: demo-preview-fees
+    releaseNameOverride: "chart-cmc-preview-fees"
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://demo-preview-postgres:5432/fees_register"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://chart-cmc-preview-postgres:5432/fees_register"
 
 payment-api:
   java:
-    releaseNameOverride: demo-preview-payments
-    secrets: 
+    releaseNameOverride: "chart-cmc-preview-payments"
+    secrets:
       GOV_PAY_AUTH_KEY_CMC:
-          secretRef: ccpay-aat-gov-pay-keys-cmc
-          key: key
+        secretRef: "gov-pay-keys-cmc"
+        key: key
     environment:
-      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.aat.platform.hmcts.net
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://demo-preview-s2s
-      FEES_REGISTER_URL: http://demo-preview-fees
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://demo-preview-postgres:5432/payment_api"
+      AUTH_IDAM_CLIENT_BASEURL: "https://idam-api.aat.platform.hmcts.net"
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://chart-cmc-preview-s2s"
+      FEES_REGISTER_URL: "http://chart-cmc-preview-fees"
+      CORE_CASE_DATA_API_URL: "http://chart-cmc-preview-data-store-api"
+      CCD_CLIENT_URL: "http://chart-cmc-preview-data-store-api"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://chart-cmc-preview-postgres:5432/payment_api"
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
 
 rpe-service-auth-provider:
   java:
-    releaseNameOverride: demo-preview-s2s
+    releaseNameOverride: "chart-cmc-preview-s2s"
 
 postgresql:
   nameOverride: postgres
+
+blobstorage:
+  releaseNameOverride: "chart-cmc-preview-blobstorage"
+
 ########################
