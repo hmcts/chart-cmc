@@ -146,8 +146,6 @@ dm-store:
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       MAX_FILE_SIZE: '100MB'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
-    blobstorage:
-      enabled: true
 
 cmc-pdf-service:
   java:
