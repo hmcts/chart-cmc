@@ -6,7 +6,6 @@ tags:
   ccd-idam-pr: true                     # claim-store chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
-  blobstorage: false                    # blob storage for dm-store
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -68,7 +67,7 @@ cmc-citizen-frontend:
   nodejs:
     image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
     memoryRequests: 512Mi
-    memoryLimits: 1024Mi 
+    memoryLimits: 1024Mi
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
@@ -131,27 +130,21 @@ rpe-send-letter-service:
 
 dm-store:
   java:
-    image: hmctspublic.azurecr.io/dm/store:prod-c8eee091
+    image: hmctspublic.azurecr.io/dm/store:latest
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
     livenessPeriod: 60
-    secrets:
-      STORAGE_ACCOUNT_NAME:
-        disabled: true
-      STORAGE_ACCOUNT_KEY:
-        disabled: true
-      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
-        disabled: true
-    keyVaults:
+    keyVaults: {}
     environment:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
-      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
-      POSTGRES_STORAGE_ENABLED: 'true'
-      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
+      ENABLE_AZURE_STORAGE_CONTAINER: 'true'
+      POSTGRES_STORAGE_ENABLED: 'false'
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
+      MAX_FILE_SIZE: '100MB'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
 
 cmc-pdf-service:
@@ -254,4 +247,14 @@ postgresql:
   postgresqlDatabase: user-profile
   persistence:
     enabled: true
+
+blobstorage:
+  resourceGroup: cmc-aks
+  teamName: "CMC"
+  location: uksouth
+  setup:
+    containers:
+      - definition-store
+      - dm-store
+      - dm-docstore
 ########################

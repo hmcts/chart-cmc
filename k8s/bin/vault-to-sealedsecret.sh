@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# vault-to-sealedsecret.sh aat /Users/markry/workspace/hmcts/cnp-flux-config/k8s/aat/pub-cert.pem money-claims-test
+# vault-to-sealedsecret.sh aat /Users/kariml/Development/cnp-flux-config/k8s/aat/pub-cert.pem money-claims
+
 
 env=$1
 cert=$2
@@ -13,8 +14,8 @@ secrets=(
     'cmc|anonymous-caseworker-password'
     'cmc|system-update-username'
     'cmc|system-update-password'
-    'cmc|ccd-importer-username' 
-    'cmc|ccd-importer-password' 
+    'cmc|ccd-importer-username'
+    'cmc|ccd-importer-password'
     'ccd|ccd-api-gateway-oauth2-client-secret'
     'ccd|ccd-admin-web-oauth2-client-secret'
     'ccpay|gov-pay-keys-cmc'
