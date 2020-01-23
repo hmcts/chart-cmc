@@ -143,7 +143,6 @@ dm-store:
       SPRING_DATASOURCE_PASSWORD: hmcts
       ENABLE_AZURE_STORAGE_CONTAINER: 'true'
       POSTGRES_STORAGE_ENABLED: 'false'
-      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net'
       STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
       MAX_FILE_SIZE: '100MB'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge

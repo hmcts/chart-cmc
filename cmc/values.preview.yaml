@@ -149,6 +149,7 @@ dm-store:
       IDAM_USER_BASE_URI: "https://idam-api.aat.platform.hmcts.net"
       IDAM_S2S_BASE_URI: "http://chart-cmc-preview-s2s"
       SPRING_DATASOURCE_URL: "jdbc:postgresql://chart-cmc-preview-postgres:5432/evidence"
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net'
 
 cmc-pdf-service:
   java:
