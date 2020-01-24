@@ -6,6 +6,7 @@ tags:
   ccd-idam-pr: true                     # claim-store chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
   postgresql-pod: false                 # any chart specific postgres
+  blobstorage: false                    # blob storage for dm-store
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -102,6 +103,8 @@ cmc-citizen-frontend:
         command: /scripts/add-weighted-toggle.sh cmc_admissions 'CMC admissions' '1.0' &&
           /scripts/add-weighted-toggle.sh cmc_directions_questionnaire 'CMC Directions Questionnaire' '1.0' &&
           /scripts/add-weighted-toggle.sh cmc_mediation_pilot 'CMC Mediation Pilot' '1.0' &&
+          /scripts/add-weighted-toggle.sh cmc_legal_advisor 'CMC LEGAL ADVISOR' '1.0' &&
+          /scripts/add-weighted-toggle.sh cmc_judge_pilot 'CMC Judge Pilot' '1.0' &&
           /scripts/add-toggle.sh cmc_defence_reminders 'CMC defence reminders' false
         enabled: true
         permissions: cmc-new-features-consent-given
@@ -130,21 +133,27 @@ rpe-send-letter-service:
 
 dm-store:
   java:
-    image: hmctspublic.azurecr.io/dm/store:latest
+    image: hmctspublic.azurecr.io/dm/store:prod-c8eee091
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
     livenessPeriod: 60
-    keyVaults: {}
+    secrets:
+      STORAGE_ACCOUNT_NAME:
+        disabled: true
+      STORAGE_ACCOUNT_KEY:
+        disabled: true
+      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME:
+        disabled: true
+    keyVaults:
     environment:
       ENABLE_DB_MIGRATE: 'true'
       ENABLE_TTL: 'false'
       SPRING_DATASOURCE_USERNAME: hmcts
       SPRING_DATASOURCE_PASSWORD: hmcts
-      ENABLE_AZURE_STORAGE_CONTAINER: 'true'
-      POSTGRES_STORAGE_ENABLED: 'false'
-      STORAGE_CONTAINER_DOCUMENT_CONTAINER_NAME: dm-store
-      MAX_FILE_SIZE: '100MB'
+      ENABLE_AZURE_STORAGE_CONTAINER: 'false'
+      POSTGRES_STORAGE_ENABLED: 'true'
+      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=AAAAAAAAAAAAAAAA;AccountKey=AAAAAAAAAAAAAAAA;EndpointSuffix=core.windows.net'
       CASE_WORKER_ROLES: caseworker-cmc,caseworker-cmc-judge
 
 cmc-pdf-service:
@@ -247,14 +256,4 @@ postgresql:
   postgresqlDatabase: user-profile
   persistence:
     enabled: true
-
-blobstorage:
-  resourceGroup: cmc-aks
-  teamName: "CMC"
-  location: uksouth
-  setup:
-    containers:
-      - definition-store
-      - dm-store
-      - dm-docstore
 ########################
