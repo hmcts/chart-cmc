@@ -112,7 +112,7 @@ cmc-citizen-frontend:
       FEATURE_MEDIATION_PILOT: true
       FEATURE_DIRECTIONS_QUESTIONNAIRE: true
       FEATURE_ADMISSIONS: true
-      FEATURE_INVERSION_OF_CONTROL: false
+      FEATURE_INVERSION_OF_CONTROL: true
 
   idam-pr:
     service:
@@ -138,18 +138,10 @@ rpe-send-letter-service:
 dm-store:
   java:
     releaseNameOverride: "chart-cmc-preview-dmstore"
-    secrets:
-      STORAGE_ACCOUNT_NAME:
-        secretRef: storage-secret-chart-cmc-preview-blobstorage
-        key: storageAccountName
-      STORAGE_ACCOUNT_KEY:
-        secretRef: storage-secret-chart-cmc-preview-blobstorage
-        key: accessKey
     environment:
       IDAM_USER_BASE_URI: "https://idam-api.aat.platform.hmcts.net"
       IDAM_S2S_BASE_URI: "http://chart-cmc-preview-s2s"
       SPRING_DATASOURCE_URL: "jdbc:postgresql://chart-cmc-preview-postgres:5432/evidence"
-      STORAGEACCOUNT_PRIMARY_CONNECTION_STRING: 'DefaultEndpointsProtocol=https;AccountName=$(STORAGE_ACCOUNT_NAME);AccountKey=$(STORAGE_ACCOUNT_KEY);EndpointSuffix=core.windows.net'
 
 cmc-pdf-service:
   java:
@@ -192,8 +184,5 @@ rpe-service-auth-provider:
 
 postgresql:
   nameOverride: postgres
-
-blobstorage:
-  releaseNameOverride: "chart-cmc-preview-blobstorage"
 
 ########################
