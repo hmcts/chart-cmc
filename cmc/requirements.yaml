@@ -29,3 +29,6 @@ dependencies:
   - name: rpe-send-letter-service
     version: ~0.0.4
     repository: '@hmctspublic'
+  - name: dg-docassembly
+    version: ~0.0.4
+    repository: '@hmctspublic'

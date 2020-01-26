@@ -34,6 +34,7 @@ cmc-claim-store:
       PDF_SERVICE_URL: "http://chart-cmc-preview-pdf"
       SEND_LETTER_URL: "http://chart-cmc-preview-sendletter"
       DOCUMENT_MANAGEMENT_URL: "http://chart-cmc-preview-dmstore"
+      DOC_ASSEMBLY_URL: "http://chart-cmc-preview-dg-docassembly"
       FRONTEND_BASE_URL: "https://chart-cmc-preview-citizen-frontend.service.core-compute-preview.internal"
       RESPOND_TO_CLAIM_URL: "https://chart-cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
@@ -181,6 +182,17 @@ payment-api:
 rpe-service-auth-provider:
   java:
     releaseNameOverride: "chart-cmc-preview-s2s"
+
+dg-docassembly:
+  docassembly-api:
+    java:
+      releaseNameOverride: "chart-cmc-preview-dg-docassembly"
+    environment:
+      DM_STORE_APP_URL: "http://chart-cmc-preview-dmstore"
+      IDAM_API_BASE_URI: "https://idam-api.aat.platform.hmcts.net"
+      S2S_BASE_URI: "http://chart-cmc-preview-s2s"
+      DOCMOSIS_TEMPLATES_ENDPOINT: https://docmosis-development.platform.hmcts.net
+      DOCMOSIS_ENDPOINT: https://docmosis-development.platform.hmcts.net/rs/render
 
 postgresql:
   nameOverride: postgres
