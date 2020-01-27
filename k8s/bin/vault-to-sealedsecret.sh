@@ -14,11 +14,6 @@ secrets=(
     'cmc|anonymous-caseworker-password'
     'cmc|system-update-username'
     'cmc|system-update-password'
-    'cmc|ccd-importer-username'
-    'cmc|ccd-importer-password'
-    'ccd|ccd-api-gateway-oauth2-client-secret'
-    'ccd|ccd-admin-web-oauth2-client-secret'
-    'ccpay|gov-pay-keys-cmc'
 )
 
 for i in "${secrets[@]}"; do
