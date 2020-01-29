@@ -1,19 +1,20 @@
 global:
   environment:   "aat"
-  idamApiUrl:    "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
-  idamWebUrl:    "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net"
-  pdfServiceUrl: "http://cmc-pdf-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-  sendLetterUrl: "http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-  documentManagementUrl: "http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-  ccdCaseDataApiUrl: "http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-  s2sAuthUrl: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-  draftStoreUrl: "http://draft-store-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-
+  idamApiUrl:    "https://idam-api.aat.platform.hmcts.net"
+  idamWebUrl:    "https://idam-web-public.aat.platform.hmcts.net"
+  pdfServiceUrl: "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
+  sendLetterUrl: "http://rpe-send-letter-service-aat.service.core-compute-aat.internal"
+  documentManagementUrl: "http://dm-store-aat.service.core-compute-aat.internal"
+  ccdCaseDataApiUrl: "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
+  s2sAuthUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
+  paymentUrl: "http://payment-api-aat.service.core-compute-aat.internal"
+  feesUrl: "http://fees-register-api-aat.service.core-compute-aat.internal"
 
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: "{{ .Release.Name }}-claimstore"
+    releaseNameOverride: "cmc-preview-claimstore"
     secrets:
       GOV_NOTIFY_API_KEY:
         secretRef: notify-api-key
@@ -36,14 +37,14 @@ cmc-claim-store:
     environment:
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
-      CLAIM_STORE_DB_HOST: "http://{{ .Release.Name }}-postgres"
-      CMC_DB_HOST: "http://{{ .Release.Name }}-postgres"
+      CLAIM_STORE_DB_HOST: "cmc-preview-postgres"
+      CMC_DB_HOST: "cmc-preview-postgres"
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_AUTH_URL: '{{ .Values.global.s2sAuthUrl }}'
-      FRONTEND_BASE_URL: "https://{{ .Release.Name }}-citizen-frontend.service.core-compute-preview.internal"
-      RESPOND_TO_CLAIM_URL: "https://{{ .Release.Name }}-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
+      FRONTEND_BASE_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal"
+      RESPOND_TO_CLAIM_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: false
       APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
@@ -51,15 +52,17 @@ cmc-claim-store:
       PDF_SERVICE_URL: '{{ .Values.global.pdfServiceUrl }}'
       SEND_LETTER_URL: '{{ .Values.global.sendLetterUrl }}'
       DOCUMENT_MANAGEMENT_URL: '{{ .Values.global.documentManagementUrl }}'
-      PAY_URL: false
-      FEES_URL: false
+      LIVE_SUPPORT_RECIPIENT: civilmoneyclaims+live-support-int-tests@gmail.com
+      LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
+      PAY_URL: '{{ .Values.global.paymentUrl }}'
+      FEES_URL: '{{ .Values.global.feesUrl }}'
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "{{ .Release.Name }}-citizen-frontend.service.core-compute-preview.internal"
+    ingressHost: "cmc-preview-citizen-frontend.service.core-compute-preview.internal"
+    releaseNameOverride: "cmc-preview-citizen-web"
     memoryRequests: 512Mi
     memoryLimits: 1024Mi
-    releaseNameOverride: "{{ .Release.Name }}-citizen-web"
     secrets:
       OAUTH_CLIENT_SECRET:
         secretRef: citizen-oauth-client-secret
@@ -67,8 +70,8 @@ cmc-citizen-frontend:
     environment:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
-      CLAIM_STORE_URL: "http://{{ .Release.Name }}-claimstore"
-      FEATURE_TOGGLES_API_URL: "http://{{ .Release.Name }}-ftrtgl"
+      CLAIM_STORE_URL: "http://cmc-preview-claimstore"
+      FEATURE_TOGGLES_API_URL: "http://cmc-preview-ftrtgl"
       IDAM_S2S_AUTH: '{{ .Values.global.s2sAuthUrl }}'
       DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
       FEATURE_MEDIATION: true
@@ -76,19 +79,18 @@ cmc-citizen-frontend:
       FEATURE_DIRECTIONS_QUESTIONNAIRE: true
       FEATURE_ADMISSIONS: true
       FEATURE_INVERSION_OF_CONTROL: true
-      PAY_URL: false
-      FEES_URL: false
-
+      PAY_URL: '{{ .Values.global.paymentUrl }}'
+      FEES_URL: '{{ .Values.global.feesUrl }}'
   idam-pr:
     service:
-      redirect_uri: "https://{{ .Release.Name }}-citizen-frontend.service.core-compute-preview.internal/receiver"
+      redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
-      apiUrl: "http://{{ .Release.Name }}-ftrtgl/api/ff4j/store/features/"
+      apiUrl: "http://cmc-preview-ftrtgl/api/ff4j/store/features/"
     java:
-      releaseNameOverride: "{{ .Release.Name }}-ftrtgl"
+      releaseNameOverride: "cmc-preview-ftrtgl"
       environment:
-        FEATURES_DB_HOST: "http://{{ .Release.Name }}-postgres"
+        FEATURES_DB_HOST: "cmc-preview-postgres"
 
 ########################
 
