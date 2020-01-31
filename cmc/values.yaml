@@ -23,7 +23,6 @@ global:
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
-    releaseNameOverride: "cmc-preview-claimstore"
     secrets:
       GOV_NOTIFY_API_KEY:
         secretRef: notify-api-key
