@@ -5,9 +5,7 @@ tags:
   cmc-ccd-stack: false                  # claim-store chart
   frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
-  ccd-idam-pr: false                    # claim-store chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
-  blobstorage: false                    # blob storage for dm-store
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -80,14 +78,13 @@ postgresql:
       cpu: 25m
   initdbScripts:
     init.sql: |-
-      CREATE DATABASE "claimstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "cmc" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "features" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "send_letter" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
-  postgresqlDatabase: user-profile
+  postgresqlDatabase: claimstore
   persistence:
     enabled: true
 
