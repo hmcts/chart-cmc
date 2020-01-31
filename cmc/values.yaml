@@ -6,21 +6,71 @@ tags:
   frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
+global:
+  devMode: true
+  idamApiUrl:    ""
+  idamWebUrl:    ""
+  pdfServiceUrl: ""
+  sendLetterUrl: ""
+  documentManagementUrl: ""
+  ccdCaseDataApiUrl: ""
+  s2sAuthUrl: ""
+  draftStoreUrl: ""
+  paymentUrl: ""
+  feesUrl: ""
+  postgresqlHost: ""
 
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
+    releaseNameOverride: "cmc-preview-claimstore"
+    secrets:
+      GOV_NOTIFY_API_KEY:
+        secretRef: notify-api-key
+        key: key
+      OAUTH2_CLIENT_SECRET:
+        secretRef: oauth-client-secret
+        key: key
+      IDAM_CASEWORKER_ANONYMOUS_USERNAME:
+        secretRef: anonymous-caseworker-username
+        key: key
+      IDAM_CASEWORKER_ANONYMOUS_PASSWORD:
+        secretRef: anonymous-caseworker-password
+        key: key
+      IDAM_CASEWORKER_SYSTEM_USERNAME:
+        secretRef: system-update-username
+        key: key
+      IDAM_CASEWORKER_SYSTEM_PASSWORD:
+        secretRef: system-update-password
+        key: key
     image: hmctspublic.azurecr.io/cmc/claim-store:latest
+    environment:
+      SPRING_MAIL_HOST: mailhog
+      SPRING_MAIL_PORT: 1025
+      CLAIM_STORE_DB_HOST: "{{ .Values.global.postgresqlHost }}"
+      CMC_DB_HOST: "{{ .Values.global.postgresqlHost }}"
+      FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
+      FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
+      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_AUTH_URL: '{{ .Values.global.s2sAuthUrl }}'
+      CMC_DB_USERNAME: hmcts
+      CMC_DB_PASSWORD: hmcts
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: false
+      APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
+      CORE_CASE_DATA_API_URL: '{{ .Values.global.ccdCaseDataApiUrl }}'
+      PDF_SERVICE_URL: '{{ .Values.global.pdfServiceUrl }}'
+      SEND_LETTER_URL: '{{ .Values.global.sendLetterUrl }}'
+      DOCUMENT_MANAGEMENT_URL: '{{ .Values.global.documentManagementUrl }}'
+      LIVE_SUPPORT_RECIPIENT: civilmoneyclaims+live-support-int-tests@gmail.com
+      LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
+      PAY_URL: '{{ .Values.global.paymentUrl }}'
+      FEES_URL: '{{ .Values.global.feesUrl }}'
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
     livenessPeriod: 60
     keyVaults:
-    environment:
-      CMC_DB_USERNAME: hmcts
-      CMC_DB_PASSWORD: hmcts
-      PAY_URL: false
-      FEES_URL: false
 
 cmc-citizen-frontend:
   nodejs:
@@ -32,7 +82,24 @@ cmc-citizen-frontend:
     readinessPeriod: 60
     livenessPeriod: 60
     keyVaults:
+    secrets:
+      OAUTH_CLIENT_SECRET:
+        secretRef: citizen-oauth-client-secret
+        key: key
     environment:
+      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
+      CLAIM_STORE_URL: "http://cmc-preview-claimstore"
+      FEATURE_TOGGLES_API_URL: "http://cmc-preview-ftrtgl"
+      IDAM_S2S_AUTH: '{{ .Values.global.s2sAuthUrl }}'
+      DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
+      FEATURE_MEDIATION: true
+      FEATURE_MEDIATION_PILOT: true
+      FEATURE_DIRECTIONS_QUESTIONNAIRE: true
+      FEATURE_ADMISSIONS: true
+      FEATURE_INVERSION_OF_CONTROL: true
+      PAY_URL: '{{ .Values.global.paymentUrl }}'
+      FEES_URL: '{{ .Values.global.feesUrl }}'
       IDAM_S2S_TOTP_SECRET: AAAAAAAAAAAAAAAA
   idam-pr:
     service:
