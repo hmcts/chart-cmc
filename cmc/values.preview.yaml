@@ -2,14 +2,16 @@ global:
   environment:   "aat"
   idamApiUrl:    "https://idam-api.aat.platform.hmcts.net"
   idamWebUrl:    "https://idam-web-public.aat.platform.hmcts.net"
+  draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
+  s2sAuthUrl:    "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   pdfServiceUrl: "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
+  paymentUrl:    "http://payment-api-aat.service.core-compute-aat.internal"
+  feesUrl:       "http://fees-register-api-aat.service.core-compute-aat.internal"
   sendLetterUrl: "http://rpe-send-letter-service-aat.service.core-compute-aat.internal"
   documentManagementUrl: "http://dm-store-aat.service.core-compute-aat.internal"
+  dgAssemblyUrl: ""
   ccdCaseDataApiUrl: "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
-  s2sAuthUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-  draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
-  paymentUrl: "http://payment-api-aat.service.core-compute-aat.internal"
-  feesUrl: "http://fees-register-api-aat.service.core-compute-aat.internal"
+  postgresqlHost: ""
 
 ### CMC SERVICES ###
 cmc-claim-store:

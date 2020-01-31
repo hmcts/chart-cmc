@@ -10,14 +10,16 @@ global:
   devMode: true
   idamApiUrl:    ""
   idamWebUrl:    ""
-  pdfServiceUrl: ""
-  sendLetterUrl: ""
-  documentManagementUrl: ""
-  ccdCaseDataApiUrl: ""
-  s2sAuthUrl: ""
+  cmcFrontendUrl: ""
   draftStoreUrl: ""
+  s2sAuthUrl: ""
+  pdfServiceUrl: ""
   paymentUrl: ""
   feesUrl: ""
+  sendLetterUrl: ""
+  documentManagementUrl: ""
+  dgAssemblyUrl: ""
+  ccdCaseDataApiUrl: ""
   postgresqlHost: ""
 
 ### CMC SERVICES ###
