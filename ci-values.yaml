@@ -11,7 +11,7 @@ global:
   draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
   paymentUrl: "http://payment-api-aat.service.core-compute-aat.internal"
   feesUrl: "http://fees-register-api-aat.service.core-compute-aat.internal"
-  postgresqlHost: "cmc-preview-postgres"
+  postgresqlHost: "chart-cmc-ci-test"
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -33,11 +33,4 @@ cmc-citizen-frontend:
     java:
       releaseNameOverride: "cmc-preview-ftrtgl"
       environment:
-        FEATURES_DB_HOST: "cmc-preview-postgres"
-
-########################
-
-postgresql:
-  nameOverride: postgres
-
-########################
+        FEATURES_DB_HOST: "chart-cmc-ci-test-postgres"

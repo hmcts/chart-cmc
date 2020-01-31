@@ -25,7 +25,7 @@ jobs:
     parameters:
      chartName: cmc
      chartReleaseName: chart-cmc-ci-test
-     chartNamespace: chart-tests
+     chartNamespace: money-claims
      helmInstallTimeout: "900"
 
 - job: Release
