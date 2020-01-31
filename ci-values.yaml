@@ -29,8 +29,8 @@ cmc-citizen-frontend:
       redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
-      apiUrl: "http://cmc-preview-ftrtgl/api/ff4j/store/features/"
+      apiUrl: "http://chart-cmc-ci-test-ftrtgl/api/ff4j/store/features/"
     java:
-      releaseNameOverride: "cmc-preview-ftrtgl"
+      releaseNameOverride: "chart-cmc-ci-test-ftrtgl"
       environment:
         FEATURES_DB_HOST: "chart-cmc-ci-test-postgres"
