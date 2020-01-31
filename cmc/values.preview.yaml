@@ -37,7 +37,6 @@ cmc-claim-store:
     environment:
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
-      CLAIM_STORE_DB_HOST: "cmc-preview-postgres"
       CMC_DB_HOST: "cmc-preview-postgres"
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
@@ -59,8 +58,8 @@ cmc-claim-store:
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "{{ .Release.Name }}-citizen-frontend.service.core-compute-preview.internal"
-    releaseNameOverride: "{{ .Release.Name }}-citizen-web"
+    ingressHost: 'cmc-preview-citizen-frontend.service.core-compute-preview.internal'
+    releaseNameOverride: 'cmc-preview-citizen-web'
     memoryRequests: 512Mi
     memoryLimits: 1024Mi
     secrets:

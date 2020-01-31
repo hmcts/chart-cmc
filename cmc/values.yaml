@@ -17,8 +17,6 @@ cmc-claim-store:
     livenessPeriod: 60
     keyVaults:
     environment:
-      CLAIM_STORE_DB_USERNAME: hmcts
-      CLAIM_STORE_DB_PASSWORD: hmcts
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
       PAY_URL: false
@@ -72,7 +70,6 @@ cmc-citizen-frontend:
 ########################
 
 postgresql:
-  #postgresqlConfiguration: { "maxConnections": 300 }
   resources:
     requests:
       cpu: 25m
@@ -80,8 +77,6 @@ postgresql:
     init.sql: |-
       CREATE DATABASE "cmc" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "features" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "draftstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "send_letter" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   postgresqlDatabase: claimstore
