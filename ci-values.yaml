@@ -23,8 +23,8 @@ cmc-claim-store:
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "cmc-citizen-frontend.service.core-compute-preview.internal"
-    releaseNameOverride: "cmc-citizen-frontend"
+    ingressHost: "cmc-preview-citizen.service.core-compute-preview.internal"
+    releaseNameOverride: "cmc-preview-citizen"
   idam-pr:
     service:
       redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
