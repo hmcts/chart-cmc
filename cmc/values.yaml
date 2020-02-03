@@ -49,6 +49,7 @@ cmc-claim-store:
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
       CMC_DB_HOST: "{{ .Values.global.postgresqlHost }}"
+      CLAIM_STORE_DB_HOST: "{{ .Values.global.postgresqlHost }}"
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
@@ -147,7 +148,7 @@ postgresql:
       CREATE DATABASE "features" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
-  postgresqlDatabase: cmc
+  postgresqlDatabase: claimstore
   persistence:
     enabled: true
 
