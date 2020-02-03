@@ -22,7 +22,6 @@ cmc-claim-store:
       RESPOND_TO_CLAIM_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
 
 cmc-citizen-frontend:
-  releaseNameOverride: "chart-cmc-ci-tes-claimstore"
   nodejs:
     ingressHost: "cmc-citizen-frontend.service.core-compute-preview.internal"
     releaseNameOverride: "cmc-citizen-frontend"
