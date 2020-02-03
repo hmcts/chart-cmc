@@ -11,7 +11,7 @@ global:
   documentManagementUrl: "http://dm-store-aat.service.core-compute-aat.internal"
   dgAssemblyUrl: "http://dg-docassembly-aat.service.core-compute-aat.internal"
   ccdCaseDataApiUrl: "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
-  postgresqlHost: ""
+  postgresqlHost: "cmc-preview-postgres"
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -36,28 +36,6 @@ cmc-claim-store:
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
         secretRef: system-update-password
         key: key
-    environment:
-      SPRING_MAIL_HOST: mailhog
-      SPRING_MAIL_PORT: 1025
-      CMC_DB_HOST: "cmc-preview-postgres"
-      FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
-      FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
-      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_S2S_AUTH_URL: '{{ .Values.global.s2sAuthUrl }}'
-      FRONTEND_BASE_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal"
-      RESPOND_TO_CLAIM_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: false
-      APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
-      CORE_CASE_DATA_API_URL: '{{ .Values.global.ccdCaseDataApiUrl }}'
-      PDF_SERVICE_URL: '{{ .Values.global.pdfServiceUrl }}'
-      SEND_LETTER_URL: '{{ .Values.global.sendLetterUrl }}'
-      DOCUMENT_MANAGEMENT_URL: '{{ .Values.global.documentManagementUrl }}'
-      DOC_ASSEMBLY_URL: '{{ .Values.global.dgAssemblyUrl }}'
-      LIVE_SUPPORT_RECIPIENT: civilmoneyclaims+live-support-int-tests@gmail.com
-      LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
-      PAY_URL: '{{ .Values.global.paymentUrl }}'
-      FEES_URL: '{{ .Values.global.feesUrl }}'
 
 cmc-citizen-frontend:
   nodejs:
@@ -69,20 +47,6 @@ cmc-citizen-frontend:
       OAUTH_CLIENT_SECRET:
         secretRef: citizen-oauth-client-secret
         key: key
-    environment:
-      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
-      CLAIM_STORE_URL: "http://cmc-preview-claimstore"
-      FEATURE_TOGGLES_API_URL: "http://cmc-preview-ftrtgl"
-      IDAM_S2S_AUTH: '{{ .Values.global.s2sAuthUrl }}'
-      DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
-      FEATURE_MEDIATION: true
-      FEATURE_MEDIATION_PILOT: true
-      FEATURE_DIRECTIONS_QUESTIONNAIRE: true
-      FEATURE_ADMISSIONS: true
-      FEATURE_INVERSION_OF_CONTROL: true
-      PAY_URL: '{{ .Values.global.paymentUrl }}'
-      FEES_URL: '{{ .Values.global.feesUrl }}'
   idam-pr:
     service:
       redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
