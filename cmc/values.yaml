@@ -63,6 +63,7 @@ cmc-claim-store:
       PDF_SERVICE_URL: '{{ .Values.global.pdfServiceUrl }}'
       SEND_LETTER_URL: '{{ .Values.global.sendLetterUrl }}'
       DOCUMENT_MANAGEMENT_URL: '{{ .Values.global.documentManagementUrl }}'
+      DOC_ASSEMBLY_URL: '{{ .Values.global.dgAssemblyUrl }}'
       LIVE_SUPPORT_RECIPIENT: civilmoneyclaims+live-support-int-tests@gmail.com
       LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
       PAY_URL: '{{ .Values.global.paymentUrl }}'
