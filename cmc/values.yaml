@@ -49,6 +49,7 @@ cmc-claim-store:
       SPRING_MAIL_HOST: mailhog
       SPRING_MAIL_PORT: 1025
       CMC_DB_HOST: "{{ .Values.global.postgresqlHost }}"
+      CLAIM_STORE_DB_HOST: "{{ .Values.global.postgresqlHost }}"
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
