@@ -35,3 +35,7 @@ cmc-citizen-frontend:
       releaseNameOverride: "chart-cmc-ci-test-rpe-feature-toggle-api"
       environment:
         FEATURES_DB_HOST: "chart-cmc-ci-test-postgresql"
+
+postgresql:
+  persistence:
+    enabled: false
