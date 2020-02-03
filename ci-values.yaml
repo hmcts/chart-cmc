@@ -6,6 +6,7 @@ global:
   pdfServiceUrl: "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
   sendLetterUrl: "http://rpe-send-letter-service-aat.service.core-compute-aat.internal"
   documentManagementUrl: "http://dm-store-aat.service.core-compute-aat.internal"
+  dgAssemblyUrl: "http://dg-docassembly-aat.service.core-compute-aat.internal"
   ccdCaseDataApiUrl: "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   s2sAuthUrl: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
