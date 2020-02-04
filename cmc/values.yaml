@@ -1,9 +1,11 @@
 tags:
-  cmc-claim-store-postgresql-pod: false # claim-store chart
-  cmc-citizen-frontend-pod: false       # claim-store chart
-  cmc-claim-store-pod: false            # claim-store pod from citizen-frontend chart
-  cmc-ccd-stack: false                  # claim-store chart
   frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
+  cmc-ccd-stack: false                  # disable old claim-store ccd stack
+  cmc-claim-store-pod: false            # disable citizen-frontend chart claim-store stack
+  cmc-citizen-frontend-pod: false       # disable citizen-frontend from claim-store chart
+  postgresql-pod: false                 # disable any sub-chart postgres
+  cmc-frontend-postgresql-pod: false    # disable citizen-frontend postgres
+  cmc-claim-store-postgresql-pod: false # disable old claim-store postgres
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
 
@@ -25,11 +27,11 @@ global:
 
 ### CMC SERVICES ###
 cmc-claim-store:
+  ccd:
+    enabled: false
   cmc-citizen-frontend:
     enabled: false
   postgresql:
-    enabled: false
-  ccd:
     enabled: false
   java:
     secrets:
