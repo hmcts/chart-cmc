@@ -6,8 +6,8 @@ tags:
   postgresql-pod: false                 # disable any sub-chart postgres
   cmc-frontend-postgresql-pod: false    # disable citizen-frontend postgres
   cmc-claim-store-postgresql-pod: false # disable old claim-store postgres
-  idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
-  rpe-feature-toggle-api-pod: true      # citizen-frontend dep
+  idam-pr: false                        # citizen-frontend chart - will add IDAM redirect urls
+  rpe-feature-toggle-api-pod: false     # citizen-frontend dep
 
 global:
   devMode: true
