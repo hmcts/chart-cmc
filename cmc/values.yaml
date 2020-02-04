@@ -52,6 +52,10 @@ cmc-claim-store:
       CLAIM_STORE_DB_HOST: "{{ .Values.global.postgresqlHost }}"
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
+      CLAIM_STORE_DB_USERNAME: hmcts
+      CLAIM_STORE_DB_PASSWORD: hmcts
+      CLAIM_STORE_DB_NAME: claimstore
+      CLAIM_STORE_DB_PORT: 5432
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
