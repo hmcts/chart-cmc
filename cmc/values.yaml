@@ -6,6 +6,7 @@ tags:
   frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
+
 global:
   devMode: true
   idamApiUrl:    ""
@@ -24,6 +25,12 @@ global:
 
 ### CMC SERVICES ###
 cmc-claim-store:
+  cmc-citizen-frontend:
+    enabled: false
+  postgresql:
+    enabled: false
+  ccd:
+    enabled: false
   java:
     secrets:
       GOV_NOTIFY_API_KEY:
