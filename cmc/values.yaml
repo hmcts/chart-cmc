@@ -1,16 +1,20 @@
 tags:
-  cmc-claim-store-postgresql-pod: false # claim-store chart
-  cmc-citizen-frontend-pod: false       # claim-store chart
-  cmc-claim-store-pod: false            # claim-store pod from citizen-frontend chart
-  cmc-ccd-stack: false                  # claim-store chart
   frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
+  cmc-ccd-stack: false                  # disable old claim-store ccd stack
+  cmc-claim-store-pod: false            # disable citizen-frontend chart claim-store stack
+  cmc-citizen-frontend-pod: false       # disable citizen-frontend from claim-store chart
+  postgresql-pod: false                 # disable any sub-chart postgres
+  cmc-frontend-postgresql-pod: false    # disable citizen-frontend postgres
+  cmc-claim-store-postgresql-pod: false # disable old claim-store postgres
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
+
 global:
   devMode: true
-  idamApiUrl:    ""
-  idamWebUrl:    ""
+  idamApiUrl: ""
+  idamWebUrl: ""
   cmcFrontendUrl: ""
+  cmcBackendUrl: ""
   draftStoreUrl: ""
   s2sAuthUrl: ""
   pdfServiceUrl: ""
@@ -20,10 +24,17 @@ global:
   documentManagementUrl: ""
   dgAssemblyUrl: ""
   ccdCaseDataApiUrl: ""
+  togglesUrl: ""
   postgresqlHost: ""
 
 ### CMC SERVICES ###
 cmc-claim-store:
+  ccd:
+    enabled: false
+  cmc-citizen-frontend:
+    enabled: false
+  postgresql:
+    enabled: false
   java:
     secrets:
       GOV_NOTIFY_API_KEY:
@@ -52,6 +63,10 @@ cmc-claim-store:
       CLAIM_STORE_DB_HOST: "{{ .Values.global.postgresqlHost }}"
       CMC_DB_USERNAME: hmcts
       CMC_DB_PASSWORD: hmcts
+      CLAIM_STORE_DB_USERNAME: hmcts
+      CLAIM_STORE_DB_PASSWORD: hmcts
+      CLAIM_STORE_DB_NAME: claimstore
+      CLAIM_STORE_DB_PORT: 5432
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
@@ -75,6 +90,9 @@ cmc-claim-store:
     keyVaults:
 
 cmc-citizen-frontend:
+  cmc-claim-store:
+    ccd:
+      enabled: false
   nodejs:
     image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
     memoryRequests: 512Mi
@@ -91,8 +109,8 @@ cmc-citizen-frontend:
     environment:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
-      CLAIM_STORE_URL: "http://cmc-preview-claimstore"
-      FEATURE_TOGGLES_API_URL: "http://cmc-preview-ftrtgl"
+      CLAIM_STORE_URL: '{{ .Values.global.cmcBackendUrl }}'
+      FEATURE_TOGGLES_API_URL: '{{ .Values.global.togglesUrl }}'
       IDAM_S2S_AUTH: '{{ .Values.global.s2sAuthUrl }}'
       DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
       FEATURE_MEDIATION: true
@@ -144,11 +162,11 @@ postgresql:
       cpu: 25m
   initdbScripts:
     init.sql: |-
+      CREATE DATABASE "claimstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "cmc" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "features" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
-  postgresqlDatabase: claimstore
   persistence:
     enabled: true
 

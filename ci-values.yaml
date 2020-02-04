@@ -12,6 +12,8 @@ global:
   draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
   paymentUrl: "http://payment-api-aat.service.core-compute-aat.internal"
   feesUrl: "http://fees-register-api-aat.service.core-compute-aat.internal"
+  togglesUrl: "http://chart-cmc-ci-test-rpe-feature-toggle-api-java"
+  cmcBackendUrl: "http://chart-cmc-ci-test-java"
   postgresqlHost: "chart-cmc-ci-test-postgresql"
 
 ### CMC SERVICES ###
@@ -23,8 +25,8 @@ cmc-claim-store:
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "cmc-preview-citizen.service.core-compute-preview.internal"
-    releaseNameOverride: "cmc-preview-citizen"
+    ingressHost: "cmc-preview-citizen-frontend.service.core-compute-preview.internal"
+    releaseNameOverride: "cmc-citizen-frontend"
   idam-pr:
     service:
       redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
