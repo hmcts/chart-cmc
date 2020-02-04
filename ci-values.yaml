@@ -1,3 +1,14 @@
+tags:
+  frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
+  cmc-ccd-stack: false                  # disable old claim-store ccd stack
+  cmc-claim-store-pod: false            # disable citizen-frontend chart claim-store stack
+  cmc-citizen-frontend-pod: false       # disable citizen-frontend from claim-store chart
+  postgresql-pod: false                 # disable any sub-chart postgres
+  cmc-frontend-postgresql-pod: false    # disable citizen-frontend postgres
+  cmc-claim-store-postgresql-pod: false # disable old claim-store postgres
+  idam-pr: false                        # citizen-frontend chart - will add IDAM redirect urls
+  rpe-feature-toggle-api-pod: false     # citizen-frontend dep
+
 global:
   devMode: true
   environment:   "aat"
@@ -18,16 +29,16 @@ global:
 cmc-claim-store:
   java:
     environment:
-      FRONTEND_BASE_URL: "https://cmc-ci-test-citizen-frontend.service.core-compute-preview.internal"
-      RESPOND_TO_CLAIM_URL: "https://cmc-ci-test-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
+      FRONTEND_BASE_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal"
+      RESPOND_TO_CLAIM_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "cmc-ci-test-citizen.service.core-compute-preview.internal"
-    releaseNameOverride: "cmc-ci-test-citizen"
+    ingressHost: "cmc-preview-citizen-frontend.service.core-compute-preview.internal"
+    releaseNameOverride: "cmc-citizen-frontend"
   idam-pr:
     service:
-      redirect_uri: "https://cmc-ci-test-citizen-frontend.service.core-compute-preview.internal/receiver"
+      redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
       apiUrl: "http://chart-cmc-ci-test-rpe-feature-toggle-api/api/ff4j/store/features/"
