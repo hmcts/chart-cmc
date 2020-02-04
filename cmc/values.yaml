@@ -11,9 +11,10 @@ tags:
 
 global:
   devMode: true
-  idamApiUrl:    ""
-  idamWebUrl:    ""
+  idamApiUrl: ""
+  idamWebUrl: ""
   cmcFrontendUrl: ""
+  cmcBackendUrl: ""
   draftStoreUrl: ""
   s2sAuthUrl: ""
   pdfServiceUrl: ""
@@ -23,6 +24,7 @@ global:
   documentManagementUrl: ""
   dgAssemblyUrl: ""
   ccdCaseDataApiUrl: ""
+  togglesUrl: ""
   postgresqlHost: ""
 
 ### CMC SERVICES ###
@@ -107,8 +109,8 @@ cmc-citizen-frontend:
     environment:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
-      CLAIM_STORE_URL: "http://cmc-preview-claimstore"
-      FEATURE_TOGGLES_API_URL: "http://cmc-preview-ftrtgl"
+      CLAIM_STORE_URL: '{{ .Values.global.cmcBackendUrl }}'
+      FEATURE_TOGGLES_API_URL: '{{ .Values.global.togglesUrl }}'
       IDAM_S2S_AUTH: '{{ .Values.global.s2sAuthUrl }}'
       DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
       FEATURE_MEDIATION: true
