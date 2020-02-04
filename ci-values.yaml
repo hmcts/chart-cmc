@@ -12,7 +12,7 @@ global:
   draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
   paymentUrl: "http://payment-api-aat.service.core-compute-aat.internal"
   feesUrl: "http://fees-register-api-aat.service.core-compute-aat.internal"
-  postgresqlHost: "cmc-ci-test-postgresql"
+  postgresqlHost: "chart-cmc-ci-test-postgresql"
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -30,11 +30,11 @@ cmc-citizen-frontend:
       redirect_uri: "https://cmc-ci-test-citizen-frontend.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
-      apiUrl: "http://cmc-ci-test-rpe-feature-toggle-api/api/ff4j/store/features/"
+      apiUrl: "http://chart-cmc-ci-test-rpe-feature-toggle-api/api/ff4j/store/features/"
     java:
-      releaseNameOverride: "cmc-ci-test-rpe-feature-toggle-api"
+      releaseNameOverride: "chart-cmc-ci-test-rpe-feature-toggle-api"
       environment:
-        FEATURES_DB_HOST: "cmc-ci-test-postgresql"
+        FEATURES_DB_HOST: "chart-cmc-ci-test-postgresql"
 
 postgresql:
   persistence:
