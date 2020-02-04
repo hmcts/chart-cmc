@@ -88,6 +88,9 @@ cmc-claim-store:
     keyVaults:
 
 cmc-citizen-frontend:
+  cmc-claim-store:
+    ccd:
+      enabled: false
   nodejs:
     image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
     memoryRequests: 512Mi
