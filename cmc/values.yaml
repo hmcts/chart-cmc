@@ -144,11 +144,12 @@ postgresql:
       cpu: 25m
   initdbScripts:
     init.sql: |-
+      CREATE DATABASE "claimstore" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "cmc" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
       CREATE DATABASE "features" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
-  postgresqlDatabase: claimstore
+  postgresqlDatabase: user-profile
   persistence:
     enabled: true
 
