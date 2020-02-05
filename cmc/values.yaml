@@ -1,11 +1,5 @@
 tags:
-  frontend-ccd-stack: false             # disable citizen-frontend chart ccd stack
-  cmc-ccd-stack: false                  # disable old claim-store ccd stack
-  cmc-claim-store-pod: false            # disable citizen-frontend chart claim-store stack
-  cmc-citizen-frontend-pod: false       # disable citizen-frontend from claim-store chart
   postgresql-pod: false                 # disable any sub-chart postgres
-  cmc-frontend-postgresql-pod: false    # disable citizen-frontend postgres
-  cmc-claim-store-postgresql-pod: false # disable old claim-store postgres
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
   rpe-feature-toggle-api-pod: true      # citizen-frontend dep
 
@@ -29,12 +23,6 @@ global:
 
 ### CMC SERVICES ###
 cmc-claim-store:
-  ccd:
-    enabled: false
-  cmc-citizen-frontend:
-    enabled: false
-  postgresql:
-    enabled: false
   java:
     secrets:
       GOV_NOTIFY_API_KEY:
@@ -90,9 +78,6 @@ cmc-claim-store:
     keyVaults:
 
 cmc-citizen-frontend:
-  cmc-claim-store:
-    ccd:
-      enabled: false
   nodejs:
     image: hmctspublic.azurecr.io/cmc/citizen-frontend:latest
     memoryRequests: 512Mi
