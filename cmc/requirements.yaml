@@ -8,5 +8,5 @@ dependencies:
     repository: '@hmctspublic'
 
   - name: cmc-citizen-frontend
-    version: ~2.0.1
+    version: ~3.2.0
     repository: '@hmctspublic'
