@@ -14,6 +14,7 @@ secrets=(
     'cmc|anonymous-caseworker-password'
     'cmc|system-update-username'
     'cmc|system-update-password'
+    'cmc|postcode-lookup-api-key'
 )
 
 for i in "${secrets[@]}"; do

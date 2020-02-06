@@ -91,6 +91,9 @@ cmc-citizen-frontend:
       OAUTH_CLIENT_SECRET:
         secretRef: citizen-oauth-client-secret
         key: key
+      POSTCODE_LOOKUP_API_KEY:
+        secretRef: postcode-lookup-api-key
+        key: key
     environment:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
