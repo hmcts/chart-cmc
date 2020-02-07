@@ -113,6 +113,7 @@ cmc-citizen-frontend:
     service:
       name: Money Claims - Citizen
   rpe-feature-toggle-api:
+    enabled: true
     java:
       readinessDelay: 180
       livenessDelay: 180
