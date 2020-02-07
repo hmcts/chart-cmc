@@ -1,7 +1,6 @@
 tags:
   postgresql-pod: false                 # disable any sub-chart postgres
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
-  rpe-feature-toggle-api-pod: true      # citizen-frontend dep
 
 global:
   devMode: true
@@ -113,7 +112,6 @@ cmc-citizen-frontend:
     service:
       name: Money Claims - Citizen
   rpe-feature-toggle-api:
-    enabled: true
     java:
       readinessDelay: 180
       livenessDelay: 180
