@@ -70,6 +70,7 @@ cmc-claim-store:
       LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
       PAY_URL: '{{ .Values.global.paymentUrl }}'
       FEES_URL: '{{ .Values.global.feesUrl }}'
+      IDAM_S2S_AUTH_TOTP_SECRET: AAAAAAAAAAAAAAAA
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
