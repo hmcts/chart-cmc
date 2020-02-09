@@ -16,6 +16,8 @@ secrets=(
     'cmc|system-update-password'
     'cmc|postcode-lookup-api-key'
     'cmc|os-postcode-lookup-api-key'
+    'cmc|cmc-s2s-secret'
+    'cmc|claim-store-s2s-secret'
 )
 
 for i in "${secrets[@]}"; do
