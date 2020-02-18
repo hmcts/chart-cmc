@@ -19,6 +19,8 @@ global:
   ccdCaseDataApiUrl: ""
   togglesUrl: ""
   postgresqlHost: ""
+  jddoEnabled: true
+  laDirectionOrderTemplate: "CV-CMC-GOR-ENG-0004.docx"
 
 ### CMC SERVICES ###
 cmc-claim-store:
@@ -56,6 +58,7 @@ cmc-claim-store:
       CLAIM_STORE_DB_PORT: 5432
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
+      FEATURE_TOGGLES_JDDO: '{{ .Values.global.jddoEnabled }}'
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_S2S_AUTH_URL: '{{ .Values.global.s2sAuthUrl }}'
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
@@ -66,6 +69,7 @@ cmc-claim-store:
       SEND_LETTER_URL: '{{ .Values.global.sendLetterUrl }}'
       DOCUMENT_MANAGEMENT_URL: '{{ .Values.global.documentManagementUrl }}'
       DOC_ASSEMBLY_URL: '{{ .Values.global.dgAssemblyUrl }}'
+      DOC_ASSEMBLY_TEMPLATEID: '{{ .Values.global.laDirectionOrderTemplate }}'
       LIVE_SUPPORT_RECIPIENT: civilmoneyclaims+live-support-int-tests@gmail.com
       LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
       PAY_URL: '{{ .Values.global.paymentUrl }}'
