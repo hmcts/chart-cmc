@@ -20,7 +20,7 @@ global:
   togglesUrl: ""
   postgresqlHost: ""
   jddoEnabled: true
-  laDirectionOrderTemplate: "CV-CMC-GOR-ENG-0004.docx"
+  laDirectionOrderTemplate: "CV-CMC-GOR-ENG-0004-1.docx"
 
 ### CMC SERVICES ###
 cmc-claim-store:
