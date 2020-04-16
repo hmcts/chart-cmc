@@ -1,12 +1,12 @@
 dependencies:
   - name: postgresql
-    version: ~5.3.0
+    version: ~6.3.5
     repository: '@stable'
 
   - name: cmc-claim-store
-    version: ~3.1.0
+    version: ~4.1.0
     repository: '@hmctspublic'
 
   - name: cmc-citizen-frontend
-    version: ~3.2.1
+    version: ~3.3.0
     repository: '@hmctspublic'

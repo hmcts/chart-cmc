@@ -54,6 +54,8 @@ cmc-claim-store:
       CLAIM_STORE_DB_PASSWORD: hmcts
       CLAIM_STORE_DB_NAME: claimstore
       CLAIM_STORE_DB_PORT: 5432
+      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
+      CLAIM_STORE_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
       FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
