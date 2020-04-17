@@ -1,5 +1,4 @@
 tags:
-  postgresql-pod: false                 # disable any sub-chart postgres
   idam-pr: true                         # citizen-frontend chart - will add IDAM redirect urls
 
 global:
@@ -23,6 +22,7 @@ global:
 ### CMC SERVICES ###
 cmc-claim-store:
   java:
+    keyVaults:
     secrets:
       GOV_NOTIFY_API_KEY:
         secretRef: notify-api-key
@@ -42,41 +42,52 @@ cmc-claim-store:
       IDAM_CASEWORKER_SYSTEM_PASSWORD:
         secretRef: system-update-password
         key: key
-    image: hmctspublic.azurecr.io/cmc/claim-store:latest
+      RPA_NOTIFICATIONS_MORETIMEREQUESTEDRECIPIENT:
+        secretRef: rpa-email-more-time-requested
+        key: key
+      RPA_NOTIFICATIONS_SEALEDCLAIMRECIPIENT:
+        secretRef: rpa-email-sealed-claim
+        key: key
+      RPA_NOTIFICATIONS_PAIDINFULLRECIPIENT:
+        secretRef: rpa-email-paid-in-full
+        key: key
+      RPA_NOTIFICATIONS_COUNTYCOURTJUDGEMENTRECIPIENT:
+        secretRef: rpa-email-ccj
+        key: key
+      RPA_NOTIFICATIONS_RESPONSERECIPIENT:
+        secretRef: rpa-email-response
+        key: key
+      STAFF_NOTIFICATIONS_RECIPIENT:
+        secretRef: staff-email
+        key: key
+      LIVE_SUPPORT_RECIPIENT:
+        secretRef: live-support-email
+        key: key
+    image: hmctspublic.azurecr.io/cmc/claim-store:prod-e490b2a5
     environment:
       SPRING_MAIL_HOST: mailhog
-      SPRING_MAIL_PORT: 1025
-      CMC_DB_HOST: "{{ .Values.global.postgresqlHost }}"
-      CLAIM_STORE_DB_HOST: "{{ .Values.global.postgresqlHost }}"
-      CMC_DB_USERNAME: hmcts
-      CMC_DB_PASSWORD: hmcts
-      CLAIM_STORE_DB_USERNAME: hmcts
-      CLAIM_STORE_DB_PASSWORD: hmcts
-      CLAIM_STORE_DB_NAME: claimstore
-      CLAIM_STORE_DB_PORT: 5432
-      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
-      CLAIM_STORE_DB_CONNECTION_OPTIONS: '?sslmode=allow'
-      FEATURE_TOGGLES_DIRECTIONS_QUESTIONNAIRE_ENABLED: true
-      FEATURE_TOGGLES_SAVE_CLAIM_STATE_ENABLED: true
-      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
-      IDAM_S2S_AUTH_URL: '{{ .Values.global.s2sAuthUrl }}'
+      SPRING_MAIL_PORT: 8025
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: false
-      APPINSIGHTS_INSTRUMENTATIONKEY: 00000000-0000-0000-0000-000000000000
+      CMC_DB_HOST: "{{ .Values.global.postgresqlHost }}"
+      CMC_DB_USERNAME: hmcts
+      CMC_DB_PASSWORD: hmcts
+      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
+      IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
+      IDAM_S2S_AUTH_URL: '{{ .Values.global.s2sAuthUrl }}'
       CORE_CASE_DATA_API_URL: '{{ .Values.global.ccdCaseDataApiUrl }}'
       PDF_SERVICE_URL: '{{ .Values.global.pdfServiceUrl }}'
       SEND_LETTER_URL: '{{ .Values.global.sendLetterUrl }}'
       DOCUMENT_MANAGEMENT_URL: '{{ .Values.global.documentManagementUrl }}'
       DOC_ASSEMBLY_URL: '{{ .Values.global.dgAssemblyUrl }}'
-      LIVE_SUPPORT_RECIPIENT: civilmoneyclaims+live-support-int-tests@gmail.com
       LIVE_SUPPORT_SENDER: noreply@reform.hmcts.net
+      STAFF_NOTIFICATIONS_SENDER: noreply@reform.hmcts.net
       PAY_URL: '{{ .Values.global.paymentUrl }}'
       FEES_URL: '{{ .Values.global.feesUrl }}'
     readinessDelay: 180
     livenessDelay: 180
     readinessPeriod: 60
     livenessPeriod: 60
-    keyVaults:
 
 cmc-citizen-frontend:
   nodejs:
@@ -92,9 +103,11 @@ cmc-citizen-frontend:
       OAUTH_CLIENT_SECRET:
         secretRef: citizen-oauth-client-secret
         key: key
+        disabled: false
       POSTCODE_LOOKUP_API_KEY:
         secretRef: os-postcode-lookup-api-key
         key: key
+        disabled: false
     environment:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'

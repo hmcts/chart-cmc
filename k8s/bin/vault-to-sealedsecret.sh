@@ -2,7 +2,6 @@
 
 # vault-to-sealedsecret.sh aat /Users/kariml/Development/cnp-flux-config/k8s/aat/pub-cert.pem money-claims
 
-
 env=$1
 cert=$2
 namespace=$3
@@ -18,6 +17,16 @@ secrets=(
     'cmc|os-postcode-lookup-api-key'
     'cmc|cmc-s2s-secret'
     'cmc|claim-store-s2s-secret'
+    #'cmc|AppInsightsInstrumentationKey'
+    'cmc|cmc-db-password'
+    'cmc|milo-recipient'
+    'cmc|staff-email'
+    'cmc|live-support-email'
+    'cmc|rpa-email-sealed-claim'
+    'cmc|rpa-email-more-time-requested'
+    'cmc|rpa-email-response'
+    'cmc|rpa-email-ccj'
+    'cmc|rpa-email-paid-in-full'
 )
 
 for i in "${secrets[@]}"; do
