@@ -66,7 +66,7 @@ cmc-claim-store:
     image: hmctspublic.azurecr.io/cmc/claim-store:prod-e490b2a5
     environment:
       SPRING_MAIL_HOST: mailhog
-      SPRING_MAIL_PORT: 8025
+      SPRING_MAIL_PORT: 1025
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: mailhog
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: false
       CMC_DB_HOST: "{{ .Values.global.postgresqlHost }}"
