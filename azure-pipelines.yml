@@ -43,4 +43,4 @@ jobs:
     parameters:
       chartName: cmc
       chartReleaseName: chart-cmc
-      chartNamespace: chart-tests
+      chartNamespace: money-claims

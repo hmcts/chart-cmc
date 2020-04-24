@@ -1,8 +1,8 @@
 global:
   devMode: true
-  environment:   "aat"
-  idamApiUrl:    "https://idam-api.aat.platform.hmcts.net"
-  idamWebUrl:    "https://idam-web-public.aat.platform.hmcts.net"
+  environment: "aat"
+  idamApiUrl: "https://idam-api.aat.platform.hmcts.net"
+  idamWebUrl: "https://idam-web-public.aat.platform.hmcts.net"
   pdfServiceUrl: "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
   sendLetterUrl: "http://rpe-send-letter-service-aat.service.core-compute-aat.internal"
   documentManagementUrl: "http://dm-store-aat.service.core-compute-aat.internal"
@@ -20,16 +20,15 @@ global:
 cmc-claim-store:
   java:
     environment:
-      FRONTEND_BASE_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal"
-      RESPOND_TO_CLAIM_URL: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/first-contact/start"
+      FRONTEND_BASE_URL: "https://chart-cmc-ci-test-frontend.service.core-compute-preview.internal"
+      RESPOND_TO_CLAIM_URL: "https://chart-cmc-ci-test-frontend.service.core-compute-preview.internal/first-contact/start"
 
 cmc-citizen-frontend:
   nodejs:
-    ingressHost: "cmc-preview-citizen-frontend.service.core-compute-preview.internal"
-    releaseNameOverride: "cmc-citizen-frontend"
+    ingressHost: "chart-cmc-ci-test-frontend.service.core-compute-preview.internal"
   idam-pr:
     service:
-      redirect_uri: "https://cmc-preview-citizen-frontend.service.core-compute-preview.internal/receiver"
+      redirect_uri: "https://chart-cmc-ci-test-frontend.service.core-compute-preview.internal/receiver"
   rpe-feature-toggle-api:
     importer:
       apiUrl: "http://chart-cmc-ci-test-rpe-feature-toggle-api/api/ff4j/store/features/"
