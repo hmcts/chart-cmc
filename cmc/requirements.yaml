@@ -4,9 +4,9 @@ dependencies:
     repository: '@stable'
 
   - name: cmc-claim-store
-    version: ~4.1.1
+    version: ~4.1.2
     repository: '@hmctspublic'
 
   - name: cmc-citizen-frontend
-    version: ~3.3.0
+    version: ~3.3.1
     repository: '@hmctspublic'
