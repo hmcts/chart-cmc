@@ -12,7 +12,6 @@ global:
   draftStoreUrl: "http://draft-store-service-aat.service.core-compute-aat.internal"
   paymentUrl: "http://payment-api-aat.service.core-compute-aat.internal"
   feesUrl: "http://fees-register-api-aat.service.core-compute-aat.internal"
-  togglesUrl: "http://chart-cmc-ci-test-rpe-feature-toggle-api-java"
   cmcBackendUrl: "http://chart-cmc-ci-test-java"
   postgresqlHost: "chart-cmc-ci-test-postgresql"
 
@@ -29,13 +28,6 @@ cmc-citizen-frontend:
   idam-pr:
     service:
       redirect_uri: "https://chart-cmc-ci-test-frontend.service.core-compute-preview.internal/receiver"
-  rpe-feature-toggle-api:
-    importer:
-      apiUrl: "http://chart-cmc-ci-test-rpe-feature-toggle-api/api/ff4j/store/features/"
-    java:
-      releaseNameOverride: "chart-cmc-ci-test-rpe-feature-toggle-api"
-      environment:
-        FEATURES_DB_HOST: "chart-cmc-ci-test-postgresql"
 
 postgresql:
   persistence:
