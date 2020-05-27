@@ -16,7 +16,6 @@ global:
   documentManagementUrl: ""
   dgAssemblyUrl: ""
   ccdCaseDataApiUrl: ""
-  togglesUrl: ""
   postgresqlHost: ""
 
 ### CMC SERVICES ###
@@ -62,6 +61,9 @@ cmc-claim-store:
         key: key
       LIVE_SUPPORT_RECIPIENT:
         secretRef: live-support-email
+        key: key
+      LAUNCHDARKLY_SDK_KEY:
+        secretRef: launchdarkly-sdk-key
         key: key
     image: hmctspublic.azurecr.io/cmc/claim-store:latest
     environment:
@@ -112,7 +114,6 @@ cmc-citizen-frontend:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
       CLAIM_STORE_URL: '{{ .Values.global.cmcBackendUrl }}'
-      FEATURE_TOGGLES_API_URL: '{{ .Values.global.togglesUrl }}'
       IDAM_S2S_AUTH: '{{ .Values.global.s2sAuthUrl }}'
       DRAFT_STORE_URL: '{{ .Values.global.draftStoreUrl }}'
       FEATURE_MEDIATION: true
