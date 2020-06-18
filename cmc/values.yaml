@@ -110,6 +110,10 @@ cmc-citizen-frontend:
         secretRef: os-postcode-lookup-api-key
         key: key
         disabled: false
+      LAUNCHDARKLY_SDK_KEY:
+        secretRef: launchdarkly-sdk-key
+        key: key
+        disabled: false
     environment:
       IDAM_API_URL: '{{ .Values.global.idamApiUrl }}'
       IDAM_AUTHENTICATION_WEB_URL: '{{ .Values.global.idamWebUrl }}'
