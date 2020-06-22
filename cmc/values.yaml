@@ -65,6 +65,9 @@ cmc-claim-store:
       LAUNCH_DARKLY_SDK_KEY:
         secretRef: launchdarkly-sdk-key
         key: key
+      SENDGRID_API_KEY:
+        secretRef: sendgrid-api-key
+        key: key
     image: hmctspublic.azurecr.io/cmc/claim-store:latest
     environment:
       SPRING_MAIL_HOST: mailhog

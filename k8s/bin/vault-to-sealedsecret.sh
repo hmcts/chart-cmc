@@ -28,6 +28,7 @@ secrets=(
     'cmc|rpa-email-ccj'
     'cmc|rpa-email-paid-in-full'
     'cmc|launchDarkly-sdk-key'
+    'cmc|sendgrid-api-key'
 )
 
 for i in "${secrets[@]}"; do
